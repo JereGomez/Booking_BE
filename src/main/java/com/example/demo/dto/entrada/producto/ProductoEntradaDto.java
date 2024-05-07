@@ -1,27 +1,29 @@
 package com.example.demo.dto.entrada.producto;
 
 
-import jakarta.validation.constraints.NotNull;
 
-import java.awt.*;
+
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public class ProductoEntradaDto {
 
     @NotNull(message = "El nombre del producto no puede ser nulo")
     private String nombre;
+
     @NotNull(message = "La descripcion del producto no puede ser nulo")
     private String descripcion;
-    @NotNull(message = "La lista de imagenes del producto no puede ser nulo")
-    private List<Image> listaDeImagenes;
+
+    @NotNull(message = "La lista de imagenes del producto no puede ser nula")
+    private List<String> rutasImagenes;
 
     public ProductoEntradaDto() {
     }
 
-    public ProductoEntradaDto(String nombre, String descripcion, List<Image> listaDeImagenes) {
+    public ProductoEntradaDto(String nombre, String descripcion, List<String> rutasImagenes) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.listaDeImagenes = listaDeImagenes;
+        this.rutasImagenes = rutasImagenes;
     }
 
     public String getNombre() {
@@ -40,12 +42,12 @@ public class ProductoEntradaDto {
         this.descripcion = descripcion;
     }
 
-    public List<Image> getListaDeImagenes() {
-        return listaDeImagenes;
+    public List<String> getRutasImagenes() {
+        return rutasImagenes;
     }
 
-    public void setListaDeImagenes(List<Image> listaDeImagenes) {
-        this.listaDeImagenes = listaDeImagenes;
+    public void setRutasImagenes(List<String> rutasImagenes) {
+        this.rutasImagenes = rutasImagenes;
     }
 
     @Override
@@ -53,7 +55,7 @@ public class ProductoEntradaDto {
         return "ProductoEntradaDto{" +
                 "nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                ", listaDeImagenes=" + listaDeImagenes +
+                ", rutasImagenes=" + rutasImagenes +
                 '}';
     }
 }

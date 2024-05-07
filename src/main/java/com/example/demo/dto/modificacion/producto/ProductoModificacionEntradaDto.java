@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.awt.*;
 import java.util.List;
 
-public class ProductoModificacionDto {
+public class ProductoModificacionEntradaDto {
 
     @NotNull(message = "Debe proveerse el id del producto que se desea modificar")
     private Long id;
@@ -14,16 +14,16 @@ public class ProductoModificacionDto {
     @NotNull(message = "Debe proveerse la descripcion del producto que se desea modificar")
     private String descripcion;
     @NotNull(message = "Debe proveerse las imagenes del producto que se desea modificar")
-    private List<Image> ListaDeImagenes;
+    private List<String> rutasImagenes;
 
-    public ProductoModificacionDto() {
+    public ProductoModificacionEntradaDto() {
     }
 
-    public ProductoModificacionDto(Long id, String nombre, String descripcion, List<Image> listaDeImagenes) {
+    public ProductoModificacionEntradaDto(Long id, String nombre, String descripcion, List<String> rutasImagenes) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        ListaDeImagenes = listaDeImagenes;
+        this.rutasImagenes = rutasImagenes;
     }
 
     public Long getId() {
@@ -50,12 +50,12 @@ public class ProductoModificacionDto {
         this.descripcion = descripcion;
     }
 
-    public List<Image> getListaDeImagenes() {
-        return ListaDeImagenes;
+    public List<String> getRutasImagenes() {
+        return rutasImagenes;
     }
 
-    public void setListaDeImagenes(List<Image> listaDeImagenes) {
-        ListaDeImagenes = listaDeImagenes;
+    public void setListaDeImagenes(List<String> rutasImagenes) {
+        rutasImagenes = rutasImagenes;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ProductoModificacionDto {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                ", ListaDeImagenes=" + ListaDeImagenes +
+                ", rutasImagenes=" + rutasImagenes+
                 '}';
     }
 }

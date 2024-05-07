@@ -16,16 +16,16 @@ public class Producto {
     private String descripcion;
 
     @Column(length = 200)
-    private List<Image> listaDeImagenes;
+    private List<String> rutasImagenes;
 
     public Producto() {
     }
 
-    public Producto(Long id,String nombre, String descripcion, List<Image> listaDeImagenes) {
+    public Producto(Long id,String nombre, String descripcion, List<String> rutasImagenes) {
         this.id= id;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.listaDeImagenes = listaDeImagenes;
+        this.rutasImagenes = rutasImagenes;
     }
 
     public String getNombre() {
@@ -44,12 +44,12 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
-    public List<Image> getListaDeImagenes() {
-        return listaDeImagenes;
+    public List<String> getRutasImagenes() {
+        return rutasImagenes;
     }
 
-    public void setListaDeImagenes(List<Image> listaDeImagenes) {
-        this.listaDeImagenes = listaDeImagenes;
+    public void setRutasImagenes(List<String> rutasImagenes) {
+        this.rutasImagenes = rutasImagenes;
     }
 
     public Long getId() {
@@ -66,7 +66,7 @@ public class Producto {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                ", listaDeImagenes=" + listaDeImagenes +
+                ", rutasImagenes=" + rutasImagenes +
                 '}';
     }
 }

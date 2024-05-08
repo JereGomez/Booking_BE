@@ -55,7 +55,7 @@ public class ProductoModificacionEntradaDto {
     }
 
     public void setListaDeImagenes(List<String> rutasImagenes) {
-        rutasImagenes = rutasImagenes;
+        this.rutasImagenes = rutasImagenes;
     }
 
     @Override

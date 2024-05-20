@@ -1,22 +1,75 @@
 package com.example.demo.dto.salida.producto;
 
+import com.example.demo.dto.salida.categoria.CategoriaSalidaDto;
+import com.example.demo.dto.salida.imagen.ImagenSalidaDto;
+import com.example.demo.entity.Categoria;
+import com.example.demo.entity.Imagen;
+import com.example.demo.entity.Ubicacion;
+
 import java.util.List;
 
 public class ProductoSalidaDto {
     private Long id;
     private String nombre;
     private String descripcion;
-    private List<String> rutasImagenes;
+
+    private Integer capacidad;
+
+    private Double precioNoche;
+
+    private Ubicacion ubicacion;
+    private List<ImagenSalidaDto> imagenes;
+
+    private List<CategoriaSalidaDto> categorias;
 
     public ProductoSalidaDto() {
     }
 
-    public ProductoSalidaDto(Long id, String nombre, String descripcion,List<String> rutasImagenes) {
+    public ProductoSalidaDto(Long id, String nombre, String descripcion, Integer capacidad, Double precioNoche, Ubicacion ubicacion, List<ImagenSalidaDto> imagenes, List<CategoriaSalidaDto> categorias) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.rutasImagenes= rutasImagenes;
+        this.capacidad = capacidad;
+        this.precioNoche = precioNoche;
+        this.ubicacion = ubicacion;
+        this.imagenes = imagenes;
+        this.categorias = categorias;
     }
+
+
+    public Integer getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(Integer capacidad) {
+        this.capacidad = capacidad;
+    }
+
+    public Double getPrecioNoche() {
+        return precioNoche;
+    }
+
+    public void setPrecioNoche(Double precioNoche) {
+        this.precioNoche = precioNoche;
+    }
+
+    public Ubicacion getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(Ubicacion ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+    public List<CategoriaSalidaDto> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<CategoriaSalidaDto> categorias) {
+        this.categorias = categorias;
+    }
+
+
 
     public Long getId() {
         return id;
@@ -30,16 +83,16 @@ public class ProductoSalidaDto {
         return nombre;
     }
 
-    public List<String> getRutasImagenes() {
-        return rutasImagenes;
-    }
-
-    public void setRutasImagenes(List<String> rutasImagenes) {
-        this.rutasImagenes = rutasImagenes;
-    }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public List<ImagenSalidaDto> getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(List<ImagenSalidaDto> rutasImagenes) {
+        this.imagenes = rutasImagenes;
     }
 
     public String getDescripcion() {
@@ -56,7 +109,7 @@ public class ProductoSalidaDto {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                ", rutasImagenes=" + rutasImagenes +
+                ", rutasImagenes=" + imagenes +
                 '}';
     }
 }

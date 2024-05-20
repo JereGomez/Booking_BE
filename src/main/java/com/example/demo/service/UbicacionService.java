@@ -16,12 +16,14 @@ public class UbicacionService implements IUbicacionService {
     private final Logger LOGGER = LoggerFactory.getLogger(UbicacionService.class);
     private UbicacionRepository ubicacionRepository;
     private ModelMapper modelMapper;
+
     @Autowired
     public UbicacionService(UbicacionRepository ubicacionRepository, ModelMapper modelMapper) {
         this.ubicacionRepository = ubicacionRepository;
         this.modelMapper = modelMapper;
         configureMapping();
     }
+
     @Override
     public UbicacionSalidaDto registrarUbicacion(UbicacionEntradaDto ubicacion) {
 
@@ -33,10 +35,11 @@ public class UbicacionService implements IUbicacionService {
         //transformamos la entidad obtenida en salidaDto
         UbicacionSalidaDto ubicacionSalidaDto = modelMapper.map(ubicacionAPersistir, UbicacionSalidaDto.class);
         LOGGER.info("UbicacionSalidaDto: " + JsonPrinter.toString(ubicacionSalidaDto));
-        return ubicacionSalidaDto ;
+        return ubicacionSalidaDto;
 
     }
-    private void configureMapping(){
+
+    private void configureMapping() {
         modelMapper.typeMap(UbicacionEntradaDto.class, Ubicacion.class);
 
         modelMapper.typeMap(Ubicacion.class, UbicacionSalidaDto.class);

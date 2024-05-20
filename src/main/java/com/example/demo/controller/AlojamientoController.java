@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+/*package com.example.demo.controller;
 
 import com.example.demo.dto.entrada.alojamiento.AlojamientoEntradaDto;
 import com.example.demo.dto.modificacion.alojamiento.AlojamientoModificacionEntradaDto;
@@ -112,3 +112,4 @@ public class AlojamientoController {
             return new ResponseEntity<>(alojamientoService.actualizarAlojamiento(alojamiento),HttpStatus.OK);
         }
 }
+*/

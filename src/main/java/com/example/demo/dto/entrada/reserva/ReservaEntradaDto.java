@@ -1,6 +1,7 @@
 package com.example.demo.dto.entrada.reserva;
 
-import com.example.demo.dto.salida.alojamiento.AlojamientoSalidaDto;
+
+import com.example.demo.dto.salida.producto.ProductoSalidaDto;
 import com.example.demo.dto.salida.usuario.UsuarioSalidaDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -8,7 +9,7 @@ import jakarta.validation.constraints.FutureOrPresent;
 import java.time.LocalDate;
 
 public class ReservaEntradaDto {
-    private AlojamientoSalidaDto alojamiento;
+    private ProductoSalidaDto alojamiento;
     private UsuarioSalidaDto usuario;
     @FutureOrPresent(message = "La fecha no puede ser anterior al día de hoy")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
@@ -22,7 +23,7 @@ public class ReservaEntradaDto {
     public ReservaEntradaDto() {
     }
 
-    public ReservaEntradaDto(AlojamientoSalidaDto alojamiento, UsuarioSalidaDto usuario, LocalDate fecha_inicio, LocalDate fecha_fin, String estado, double precio) {
+    public ReservaEntradaDto(ProductoSalidaDto alojamiento, UsuarioSalidaDto usuario, LocalDate fecha_inicio, LocalDate fecha_fin, String estado, double precio) {
         this.alojamiento = alojamiento;
         this.usuario = usuario;
         this.fecha_inicio = fecha_inicio;
@@ -31,11 +32,11 @@ public class ReservaEntradaDto {
         this.precio = precio;
     }
 
-    public AlojamientoSalidaDto getAlojamiento() {
+    public ProductoSalidaDto getAlojamiento() {
         return alojamiento;
     }
 
-    public void setAlojamiento(AlojamientoSalidaDto alojamiento) {
+    public void setAlojamiento(ProductoSalidaDto alojamiento) {
         this.alojamiento = alojamiento;
     }
 

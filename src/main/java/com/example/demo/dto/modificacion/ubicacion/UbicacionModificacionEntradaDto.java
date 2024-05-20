@@ -21,8 +21,8 @@ public class UbicacionModificacionEntradaDto {
     public UbicacionModificacionEntradaDto() {
     }
 
-    public UbicacionModificacionEntradaDto(Long id,String pais, String ciudad, int codigoPostal, String direccionExacta, BigDecimal coordenadaGps) {
-        this.id=id;
+    public UbicacionModificacionEntradaDto(Long id, String pais, String ciudad, int codigoPostal, String direccionExacta, BigDecimal coordenadaGps) {
+        this.id = id;
         this.pais = pais;
         this.ciudad = ciudad;
         this.codigoPostal = codigoPostal;

@@ -1,4 +1,4 @@
-package com.example.demo.service;
+/*package com.example.demo.service;
 
 import com.example.demo.dto.entrada.alojamiento.AlojamientoEntradaDto;
 import com.example.demo.dto.modificacion.alojamiento.AlojamientoModificacionEntradaDto;
@@ -14,3 +14,4 @@ public interface IAlojamientoService {
     void eliminarAlojamiento(Long id) throws ResourceNotFoundException;
     AlojamientoSalidaDto actualizarAlojamiento(AlojamientoModificacionEntradaDto alojamiento);
 }
+*/

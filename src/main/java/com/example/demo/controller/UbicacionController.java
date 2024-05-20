@@ -15,28 +15,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 @RestController
 @RequestMapping("admin/ubicacion")
 public class UbicacionController {
 
 
-        public IUbicacionService ubicacionService;
+    public IUbicacionService ubicacionService;
 
-        public UbicacionController(IUbicacionService ubicacionService) {
-            this.ubicacionService = ubicacionService;
-        }
-        @Operation(summary = "Registro de una nueva Ubicacion")
-        @ApiResponses(value = {
-                @ApiResponse(responseCode = "201", description = "Ubicacion guardada correctamente",
-                        content = {@Content(mediaType = "application/json",
-                                schema = @Schema(implementation = UbicacionSalidaDto.class))}),
-                @ApiResponse(responseCode = "400", description = "Bad Request",
-                        content = @Content),
-                @ApiResponse(responseCode = "500", description = "Server error",
-                        content = @Content)
-        })
-        @PostMapping("/registrar")
-        public ResponseEntity<UbicacionSalidaDto> guardar(@RequestBody @Valid UbicacionEntradaDto ubicacion){
-            return new ResponseEntity<>(ubicacionService.registrarUbicacion(ubicacion), HttpStatus.CREATED);
-        }
+    public UbicacionController(IUbicacionService ubicacionService) {
+        this.ubicacionService = ubicacionService;
+    }
+
+    @Operation(summary = "Registro de una nueva Ubicacion")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Ubicacion guardada correctamente",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UbicacionSalidaDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Server error",
+                    content = @Content)
+    })
+    @PostMapping("/registrar")
+    public ResponseEntity<UbicacionSalidaDto> guardar(@RequestBody @Valid UbicacionEntradaDto ubicacion) {
+        return new ResponseEntity<>(ubicacionService.registrarUbicacion(ubicacion), HttpStatus.CREATED);
+    }
 }

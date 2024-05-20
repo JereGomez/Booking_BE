@@ -1,8 +1,9 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
-
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class Ubicacion {
@@ -21,7 +22,6 @@ public class Ubicacion {
 
     public Ubicacion(Long id, String pais, String ciudad, Long codigoPostal, String direccion_exacta, int coordenada_gps) {
         this.id = id;
-
         this.pais = pais;
         this.ciudad = ciudad;
         this.codigoPostal = codigoPostal;
@@ -36,7 +36,6 @@ public class Ubicacion {
     public void setId(Long id) {
         this.id = id;
     }
-
 
 
     public String getPais() {

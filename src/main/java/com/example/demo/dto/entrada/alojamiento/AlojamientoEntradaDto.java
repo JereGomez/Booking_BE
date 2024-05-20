@@ -1,4 +1,4 @@
-package com.example.demo.dto.entrada.alojamiento;
+/*package com.example.demo.dto.entrada.alojamiento;
 
 import com.example.demo.entity.Categoria;
 import com.example.demo.entity.Imagenes;
@@ -145,3 +145,4 @@ public class AlojamientoEntradaDto {
                 '}';
     }
 }
+*/

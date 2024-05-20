@@ -12,16 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsuarioService implements IUsuarioService{
+public class UsuarioService implements IUsuarioService {
     private final Logger LOGGER = LoggerFactory.getLogger(UsuarioService.class);
     private UsuarioRepository usuarioRepository;
     private ModelMapper modelMapper;
+
     @Autowired
     public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper) {
         this.usuarioRepository = usuarioRepository;
         this.modelMapper = modelMapper;
         configureMapping();
     }
+
     @Override
     public UsuarioSalidaDto registrarUsuario(UsuarioEntradaDto usuario) {
 
@@ -33,10 +35,11 @@ public class UsuarioService implements IUsuarioService{
         //transformamos la entidad obtenida en salidaDto
         UsuarioSalidaDto usuarioSalidaDto = modelMapper.map(usuarioAPersistir, UsuarioSalidaDto.class);
         LOGGER.info("UsuarioSalidaDto: " + JsonPrinter.toString(usuarioSalidaDto));
-        return usuarioSalidaDto ;
+        return usuarioSalidaDto;
 
     }
-    private void configureMapping(){
+
+    private void configureMapping() {
         modelMapper.typeMap(UsuarioEntradaDto.class, Usuario.class);
 
         modelMapper.typeMap(Usuario.class, UsuarioSalidaDto.class);

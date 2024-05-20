@@ -11,10 +11,11 @@ public class CategoriaSalidaDto {
     }
 
     public CategoriaSalidaDto(String nombre, String descripcion, Long id) {
-        this.id=id;
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
+
     public Long getId() {
         return id;
     }

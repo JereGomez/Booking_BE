@@ -14,15 +14,15 @@ public class UbicacionSalidaDto {
     }
 
 
-
     public UbicacionSalidaDto(String pais, String ciudad, int codigoPostal, String direccionExacta, BigDecimal coordenadaGps, Long id) {
-        this.id= id;
+        this.id = id;
         this.pais = pais;
         this.ciudad = ciudad;
         this.codigoPostal = codigoPostal;
         this.direccionExacta = direccionExacta;
         this.coordenadaGps = coordenadaGps;
     }
+
     public Long getId() {
         return id;
     }

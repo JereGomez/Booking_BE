@@ -15,7 +15,8 @@ public class Usuario {
     @Column(length = 50)
     private String apellido;
     //aca deberia ir el rol(usuario o administrador)
-    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne()
+    @JoinColumn(name="rol_id")
     private Rol rol;
     @Column(length = 50)
     private String email;

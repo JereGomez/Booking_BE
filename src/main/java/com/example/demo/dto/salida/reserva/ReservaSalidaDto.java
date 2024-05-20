@@ -1,12 +1,13 @@
 package com.example.demo.dto.salida.reserva;
 
-import com.example.demo.entity.Alojamiento;
+
+import com.example.demo.entity.Producto;
 import com.example.demo.entity.Usuario;
 
 import java.time.LocalDate;
 
 public class ReservaSalidaDto {
-    private Alojamiento alojamiento;
+    private Producto alojamiento;
     private Usuario usuario;
 
     private LocalDate fecha_inicio;
@@ -18,7 +19,7 @@ public class ReservaSalidaDto {
     public ReservaSalidaDto() {
     }
 
-    public ReservaSalidaDto(Alojamiento alojamiento, Usuario usuario, LocalDate fecha_inicio, LocalDate fecha_fin, String estado, double precio) {
+    public ReservaSalidaDto(Producto alojamiento, Usuario usuario, LocalDate fecha_inicio, LocalDate fecha_fin, String estado, double precio) {
         this.alojamiento = alojamiento;
         this.usuario = usuario;
         this.fecha_inicio = fecha_inicio;
@@ -27,11 +28,11 @@ public class ReservaSalidaDto {
         this.precio = precio;
     }
 
-    public Alojamiento getAlojamiento() {
+    public Producto getAlojamiento() {
         return alojamiento;
     }
 
-    public void setAlojamiento(Alojamiento alojamiento) {
+    public void setAlojamiento(Producto alojamiento) {
         this.alojamiento = alojamiento;
     }
 

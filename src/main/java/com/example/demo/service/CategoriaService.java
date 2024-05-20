@@ -16,12 +16,14 @@ public class CategoriaService implements ICategoriaService {
     private final Logger LOGGER = LoggerFactory.getLogger(CategoriaService.class);
     private CategoriaRepository categoriaRepository;
     private ModelMapper modelMapper;
+
     @Autowired
     public CategoriaService(CategoriaRepository categoriaRepository, ModelMapper modelMapper) {
         this.categoriaRepository = categoriaRepository;
         this.modelMapper = modelMapper;
         configureMapping();
     }
+
     @Override
     public CategoriaSalidaDto registrarCategoria(CategoriaEntradaDto categoria) {
         // Verificar si ya existe un alojamiento con el mismo nombre
@@ -37,10 +39,11 @@ public class CategoriaService implements ICategoriaService {
         //transformamos la entidad obtenida en salidaDto
         CategoriaSalidaDto categoriaSalidaDto = modelMapper.map(categoriaAPersistir, CategoriaSalidaDto.class);
         LOGGER.info("AlojamientoSalidaDto: " + JsonPrinter.toString(categoriaSalidaDto));
-        return categoriaSalidaDto ;
+        return categoriaSalidaDto;
 
     }
-    private void configureMapping(){
+
+    private void configureMapping() {
         modelMapper.typeMap(CategoriaEntradaDto.class, Categoria.class);
 
         modelMapper.typeMap(Categoria.class, CategoriaSalidaDto.class);

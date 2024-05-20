@@ -3,16 +3,17 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+
 @Entity
 public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "alojamiento_id")
-    private Alojamiento alojamiento;
 
+    @ManyToOne
+    @JoinColumn(name = "producto_id")
+    private Producto producto;
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
@@ -20,28 +21,26 @@ public class Reserva {
     private LocalDate fecha_inicio;
     private LocalDate fecha_fin;
     private String estado;
-    private double precio;
+    private double precio_total;
 
 
     public Reserva() {
     }
 
-    public Reserva(Long id, Alojamiento alojamiento, Usuario usuario, LocalDate fecha_inicio, LocalDate fecha_fin, String estado, double precio) {
+    public Reserva(Long id, Producto alojamiento, Usuario usuario, LocalDate fecha_inicio, LocalDate fecha_fin, String estado, double precio_total) {
         this.id = id;
-        this.alojamiento = alojamiento;
-        this.usuario = usuario;
         this.fecha_inicio = fecha_inicio;
         this.fecha_fin = fecha_fin;
         this.estado = estado;
-        this.precio = precio;
+        this.precio_total = precio_total;
     }
 
     public Long getId() {
         return id;
     }
 
-    public Alojamiento getAlojamiento() {
-        return alojamiento;
+    public Producto geProducto() {
+        return producto;
     }
 
     public Usuario getUsuario() {
@@ -61,19 +60,19 @@ public class Reserva {
     }
 
     public double getPrecio() {
-        return precio;
+        return precio_total;
     }
 
     @Override
     public String toString() {
         return "Reserva{" +
                 "id=" + id +
-                ", alojamiento=" + alojamiento +
+                ", alojamiento=" + producto +
                 ", usuario=" + usuario +
                 ", fecha_inicio=" + fecha_inicio +
                 ", fecha_fin=" + fecha_fin +
                 ", estado='" + estado + '\'' +
-                ", precio=" + precio +
+                ", precio=" + precio_total +
                 '}';
     }
 }

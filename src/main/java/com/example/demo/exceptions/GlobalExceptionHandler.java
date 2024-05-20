@@ -12,7 +12,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     @ExceptionHandler({ResourceNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> manejarResourceNotFound(ResourceNotFoundException exception){
+    public Map<String, String> manejarResourceNotFound(ResourceNotFoundException exception) {
         Map<String, String> mensaje = new HashMap<>();
         mensaje.put("mensaje", "Recurso no encontrado: " + exception.getMessage());
         return mensaje;
@@ -34,9 +34,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({BadRequestException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> manejarBadRequestException(BadRequestException exception){
+    public Map<String, String> manejarBadRequestException(BadRequestException exception) {
         Map<String, String> mensaje = new HashMap<>();
-        mensaje.put("mensaje", "requerimiento mal hecho:"+ exception.getMessage());
+        mensaje.put("mensaje", "requerimiento mal hecho:" + exception.getMessage());
         return mensaje;
     }
 }

@@ -1,10 +1,10 @@
-package com.example.demo.entity;
+/*package com.example.demo.entity;
 
 import jakarta.persistence.*;
 
 import java.util.List;
 @Entity
-@Table(name = "alojamiento")
+//@Table(name = "alojamiento")
 public class Alojamiento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -153,3 +153,4 @@ public class Alojamiento {
                 '}';
     }
 }
+*/

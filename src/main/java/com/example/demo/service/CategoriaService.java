@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoriaService implements ICategoriaService {
     private final Logger LOGGER = LoggerFactory.getLogger(CategoriaService.class);
@@ -41,6 +43,23 @@ public class CategoriaService implements ICategoriaService {
         LOGGER.info("AlojamientoSalidaDto: " + JsonPrinter.toString(categoriaSalidaDto));
         return categoriaSalidaDto;
 
+    }
+
+    @Override
+    public Void eliminarCategoriaByID(Long id){
+        categoriaRepository.deleteById(id);
+        LOGGER.info("Se elimino la categoria con el id: {id}");
+        return null;
+    }
+
+    @Override
+    public List<CategoriaSalidaDto> listarCategorias() {
+        List<CategoriaSalidaDto> categoriasSalidaDto = categoriaRepository.findAll()
+                .stream()
+                .map(categoria -> modelMapper.map(categoria, CategoriaSalidaDto.class))
+                .toList();
+        LOGGER.info("Listado de todas las categorias: {}", JsonPrinter.toString(categoriasSalidaDto));
+        return categoriasSalidaDto;
     }
 
     private void configureMapping() {

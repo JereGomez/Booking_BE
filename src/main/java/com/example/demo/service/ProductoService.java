@@ -54,17 +54,8 @@ public class ProductoService implements IProductoService {
             //mandamos a persistir a la capa dao y obtenemos una entidad
             Producto productoAPersistir = productoRepository.save(productoEntidad);
            List<ImagenSalidaDto> imagenesSalida = new ArrayList<ImagenSalidaDto>();
-           /*for(Imagen img : productoAPersistir.getImagenes()){
-                img.setProducto_id(productoAPersistir);
-               ImagenEntradaDto imgagenAPersistir = modelMapper.map(img, ImagenEntradaDto.class);
-                ImagenSalidaDto imagencreada = imagenService.registrarImagen(imgagenAPersistir);
-                imagenesSalida.add(imagencreada);
-             LOGGER.info("Imagen creada: "+imagencreada);
-            }*/
-
             //transformamos la entidad obtenida en salidaDto
             ProductoSalidaDto productoSalidaDto = modelMapper.map(productoAPersistir, ProductoSalidaDto.class);
-            //productoSalidaDto.setImagenes(imagenesSalida);
             LOGGER.info("ProductoSalidaDto: " + JsonPrinter.toString(productoSalidaDto));
             return productoSalidaDto;
         }
@@ -110,23 +101,23 @@ public class ProductoService implements IProductoService {
     @Override
     public ProductoSalidaDto actualizarProducto( Long id, ProductoModificacionEntradaDto producto) {
         LOGGER.info(id.toString());
-        producto.setId(id);
         Producto productoRecibido = modelMapper.map(producto, Producto.class);
-        Producto productoAActualizar = productoRepository.findById(productoRecibido.getId()).orElse(null);
+        Producto productoAActualizar = productoRepository.findById(id).orElse(null);
 
         ProductoSalidaDto productoSalidaDto = null;
 
         if (productoAActualizar != null) {
             productoAActualizar = productoRecibido;
             productoRepository.save(productoAActualizar);
-           /* for(Imagen img : producto.getImagenes()){
-                ImagenModificacionEntradaDto imagenModificacion = new ImagenModificacionEntradaDto(img.getImagen_id(), img.getNombre(), img.getRutaDeArchivo());
-                ImagenSalidaDto imagenSalida = imagenService.actualizarImagen(imagenModificacion);
-                LOGGER.info("Imagen actualizada: "+imagenSalida);
-            }*/
             productoSalidaDto = modelMapper.map(productoAActualizar, ProductoSalidaDto.class);
             LOGGER.warn("Producto actualizado: {}", JsonPrinter.toString(productoSalidaDto));
-
+//            List<ImagenModificacionEntradaDto> imagenesAActualizar = producto.getImagenes();
+//            if(imagenesAActualizar != null  & imagenesAActualizar.size() > 0){
+//                for(ImagenModificacionEntradaDto imagen : imagenesAActualizar){
+//                    imagenService.actualizarImagen(imagen);
+//
+//                }
+//            }
         } else {
             LOGGER.error("No fue posible actualizar el producto porque no se encuentra en nuestra base de datos");
             //lanzar excepcion correspondiente

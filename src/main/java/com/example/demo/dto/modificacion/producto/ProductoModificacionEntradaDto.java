@@ -39,6 +39,31 @@ public class ProductoModificacionEntradaDto {
         this.categorias = categorias;
     }
 
+    public Integer getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(Integer capacidad) {
+        this.capacidad = capacidad;
+    }
+
+    public Double getPrecioNoche() {
+        return precioNoche;
+    }
+
+    public void setPrecioNoche(Double precioNoche) {
+        this.precioNoche = precioNoche;
+    }
+
+    public List<CategoriaModificacionEntradaDto> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<CategoriaModificacionEntradaDto> categorias) {
+        this.categorias = categorias;
+    }
+
+
     public Long getId() {
         return id;
     }

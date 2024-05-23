@@ -18,5 +18,5 @@ public interface IProductoService {
 
     void eliminarProducto(Long id) throws ResourceNotFoundException;
 
-    ProductoSalidaDto actualizarProducto(Long id,ProductoModificacionEntradaDto paciente);
+    ProductoSalidaDto actualizarProducto(ProductoModificacionEntradaDto producto);
 }

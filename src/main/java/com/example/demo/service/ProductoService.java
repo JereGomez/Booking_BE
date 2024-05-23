@@ -2,14 +2,12 @@ package com.example.demo.service;
 
 import com.example.demo.dto.entrada.imagen.ImagenEntradaDto;
 import com.example.demo.dto.entrada.producto.ProductoEntradaDto;
-import com.example.demo.dto.modificacion.imagen.ImagenModificacionEntradaDto;
 import com.example.demo.dto.modificacion.producto.ProductoModificacionEntradaDto;
 import com.example.demo.dto.salida.imagen.ImagenSalidaDto;
 import com.example.demo.dto.salida.producto.ProductoSalidaDto;
 import com.example.demo.entity.Imagen;
 import com.example.demo.entity.Producto;
 import com.example.demo.exceptions.BadRequestException;
-import com.example.demo.exceptions.GlobalExceptionHandler;
 import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.repository.ProductoRepository;
 import com.example.demo.utils.JsonPrinter;
@@ -19,12 +17,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-
 @Service
-public class ProductoService implements IProductoService {
+public class ProductoService implements IProductoService{
     private final Logger LOGGER = LoggerFactory.getLogger(ProductoService.class);
     private ProductoRepository productoRepository;
     private ModelMapper modelMapper;
@@ -53,7 +49,7 @@ public class ProductoService implements IProductoService {
         else{
             //mandamos a persistir a la capa dao y obtenemos una entidad
             Producto productoAPersistir = productoRepository.save(productoEntidad);
-           List<ImagenSalidaDto> imagenesSalida = new ArrayList<ImagenSalidaDto>();
+            List<ImagenSalidaDto> imagenesSalida = new ArrayList<ImagenSalidaDto>();
            /*for(Imagen img : productoAPersistir.getImagenes()){
                 img.setProducto_id(productoAPersistir);
                ImagenEntradaDto imgagenAPersistir = modelMapper.map(img, ImagenEntradaDto.class);
@@ -108,9 +104,9 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
-    public ProductoSalidaDto actualizarProducto( Long id, ProductoModificacionEntradaDto producto) {
-        LOGGER.info(id.toString());
-        producto.setId(id);
+    public ProductoSalidaDto actualizarProducto(  ProductoModificacionEntradaDto producto) {
+
+
         Producto productoRecibido = modelMapper.map(producto, Producto.class);
         Producto productoAActualizar = productoRepository.findById(productoRecibido.getId()).orElse(null);
 
@@ -149,7 +145,7 @@ public class ProductoService implements IProductoService {
         List<Producto> productosPersistidos = productoRepository.findAll();
         for(Producto prod : productosPersistidos){
             LOGGER.info(prod.getNombre() +productoEntidad.getNombre());
-             if((prod.getNombre()).equals( productoEntidad.getNombre())) {flag=true;}
+            if((prod.getNombre()).equals( productoEntidad.getNombre())) {flag=true;}
         }
         return flag;
     }

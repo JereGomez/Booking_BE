@@ -90,7 +90,7 @@ public class ProductoController {
     })
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<ProductoSalidaDto> actualizarProducto(@PathVariable Long id, @RequestBody ProductoModificacionEntradaDto producto) {
-        return new ResponseEntity<>(productoService.actualizarProducto(id, producto), HttpStatus.OK);
+        return new ResponseEntity<>(productoService.actualizarProducto(producto), HttpStatus.OK);
     }
 
 }

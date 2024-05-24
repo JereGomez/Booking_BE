@@ -14,20 +14,22 @@ import java.util.Optional;
 public class AppUserDetailService implements UserDetailsService {
     @Autowired
     private UsuarioRepository usuarioRepository;
+
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
         Optional<Usuario> usuario = usuarioRepository.findByEmail(userEmail);
-        if (usuario.isPresent()){
-            var usuarioObj= usuario.get();
+        if (usuario.isPresent()) {
+            var usuarioObj = usuario.get();
+            // Asumiendo que el rol está almacenado como una cadena en el campo `rol`
+            String role = "ROLE_" + usuarioObj.getRol().toUpperCase(); // Por ejemplo, "ROLE_ADMIN" o "ROLE_USER"
             return User.builder()
-                    .username(usuarioObj.getNombre())
-                    .password(usuarioObj.getContrasenia())
-                    .username(usuarioObj.getApellido())
                     .username(usuarioObj.getEmail())
+                    .password(usuarioObj.getContrasenia())
+                    .authorities(role)
                     .build();
-        }else{
-            throw  new UsernameNotFoundException(userEmail);
+        } else {
+            throw new UsernameNotFoundException(userEmail);
         }
-
     }
 }
+

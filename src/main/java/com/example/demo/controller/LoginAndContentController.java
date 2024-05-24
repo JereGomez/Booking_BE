@@ -1,9 +1,44 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-@Controller
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/auth")
 public class LoginAndContentController {
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @PostMapping("/login")
+    public Map<String, Object> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getContrasenia()));
+
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String role = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .findFirst().orElse("");
+
+            return Collections.singletonMap("role", role);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Invalid credentials");
+        }
+    }
     @GetMapping("/home")
     public String handleWelcome() {
         return "home";

@@ -8,10 +8,7 @@ public class LoginAndContentController {
     public String handleWelcome() {
         return "home";
     }
-    @GetMapping("/login")
-    public String loginHandler (){
-        return "custom_login";
-    }
+
     @GetMapping("/admin/home")
     public String handleAdminHome() {
         return "home_admin";

@@ -15,8 +15,8 @@ public class AppUserDetailService implements UserDetailsService {
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Usuario> usuario = usuarioRepository.findByNombre(username);
+    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
+        Optional<Usuario> usuario = usuarioRepository.findByEmail(userEmail);
         if (usuario.isPresent()){
             var usuarioObj= usuario.get();
             return User.builder()
@@ -26,7 +26,7 @@ public class AppUserDetailService implements UserDetailsService {
                     .username(usuarioObj.getEmail())
                     .build();
         }else{
-            throw  new UsernameNotFoundException(username);
+            throw  new UsernameNotFoundException(userEmail);
         }
 
     }

@@ -25,11 +25,17 @@ public class AppUserDetailService implements UserDetailsService {
             return User.builder()
                     .username(usuarioObj.getEmail())
                     .password(usuarioObj.getContrasenia())
-                    .authorities(role)
+                    .roles(getRoles(usuarioObj))
                     .build();
         } else {
             throw new UsernameNotFoundException(userEmail);
         }
+    }
+    private String[] getRoles(Usuario usuario){
+        if(usuario.getRol()==null){
+            return new String[]{"USER"};
+        }
+        return usuario.getRol().split(",");
     }
 }
 

@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.entrada.categoria.CategoriaEntradaDto;
+import com.example.demo.dto.modificacion.categoria.CategoriaModificacionEntradaDto;
 import com.example.demo.dto.salida.categoria.CategoriaSalidaDto;
 import com.example.demo.entity.Categoria;
 import com.example.demo.repository.CategoriaRepository;
@@ -40,13 +41,16 @@ public class CategoriaService implements ICategoriaService {
         Categoria categoriaAPersistir = categoriaRepository.save(categoriaEntidad);
         //transformamos la entidad obtenida en salidaDto
         CategoriaSalidaDto categoriaSalidaDto = modelMapper.map(categoriaAPersistir, CategoriaSalidaDto.class);
-        LOGGER.info("AlojamientoSalidaDto: " + JsonPrinter.toString(categoriaSalidaDto));
+        LOGGER.info("CategoriaSalidaDto: " + JsonPrinter.toString(categoriaSalidaDto));
         return categoriaSalidaDto;
 
     }
 
     @Override
     public Void eliminarCategoriaByID(Long id){
+        if (categoriaRepository.findById(id).isPresent()) {
+            throw new IllegalArgumentException("La categoria con is '" + id + " no existe");
+        }
         categoriaRepository.deleteById(id);
         LOGGER.info("Se elimino la categoria con el id: {id}");
         return null;
@@ -60,6 +64,11 @@ public class CategoriaService implements ICategoriaService {
                 .toList();
         LOGGER.info("Listado de todas las categorias: {}", JsonPrinter.toString(categoriasSalidaDto));
         return categoriasSalidaDto;
+    }
+
+    @Override
+    public void actualizarCategoriaByID(Long id, CategoriaModificacionEntradaDto categoria) {
+
     }
 
     private void configureMapping() {

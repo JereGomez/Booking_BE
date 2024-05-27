@@ -1,9 +1,10 @@
 package com.example.demo.dto.modificacion.producto;
 
+import com.example.demo.dto.modificacion.caracteristica.CaracteristicaModificacionEntradaDto;
 import com.example.demo.dto.modificacion.categoria.CategoriaModificacionEntradaDto;
 import com.example.demo.dto.modificacion.imagen.ImagenModificacionEntradaDto;
+import com.example.demo.entity.Caracteristica;
 import com.example.demo.entity.Categoria;
-import com.example.demo.entity.Imagen;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
@@ -24,12 +25,15 @@ public class ProductoModificacionEntradaDto {
     @NotNull(message = "Debe proveerse las imagenes del producto que se desea modificar")
     private List<ImagenModificacionEntradaDto> imagenes;
     @NotNull
-    private List<CategoriaModificacionEntradaDto> categorias;
+    private List<Categoria> categorias;
+
+    private List<Caracteristica> caracteristicas;
+
 
     public ProductoModificacionEntradaDto() {
     }
 
-    public ProductoModificacionEntradaDto(Long id, String nombre, String descripcion, Integer capacidad, Double precioNoche, List<ImagenModificacionEntradaDto> imagenes, List<CategoriaModificacionEntradaDto> categorias) {
+    public ProductoModificacionEntradaDto(Long id, String nombre, String descripcion, Integer capacidad, Double precioNoche, List<ImagenModificacionEntradaDto> imagenes, List<Categoria> categorias, List<Caracteristica> caracteristicas) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -37,6 +41,7 @@ public class ProductoModificacionEntradaDto {
         this.precioNoche = precioNoche;
         this.imagenes = imagenes;
         this.categorias = categorias;
+        this.caracteristicas = caracteristicas;
     }
 
     public Integer getCapacidad() {
@@ -55,11 +60,11 @@ public class ProductoModificacionEntradaDto {
         this.precioNoche = precioNoche;
     }
 
-    public List<CategoriaModificacionEntradaDto> getCategorias() {
+    public List<Categoria> getCategorias() {
         return categorias;
     }
 
-    public void setCategorias(List<CategoriaModificacionEntradaDto> categorias) {
+    public void setCategorias(List<Categoria> categorias) {
         this.categorias = categorias;
     }
 
@@ -97,6 +102,14 @@ public class ProductoModificacionEntradaDto {
 
     public void setImagenes(List<ImagenModificacionEntradaDto> imagenes) {
         this.imagenes = imagenes;
+    }
+
+    public List<Caracteristica> getCaracteristicas() {
+        return caracteristicas;
+    }
+
+    public void setCaracteristicas(List<Caracteristica> caracteristicas) {
+        this.caracteristicas = caracteristicas;
     }
 
     @Override

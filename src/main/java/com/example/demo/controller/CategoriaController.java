@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.entrada.categoria.CategoriaEntradaDto;
+import com.example.demo.dto.modificacion.categoria.CategoriaModificacionEntradaDto;
 import com.example.demo.dto.salida.categoria.CategoriaSalidaDto;
 import com.example.demo.dto.salida.producto.ProductoSalidaDto;
+import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.service.ICategoriaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("admin/categoria")
+@RequestMapping("/categoria")
 public class CategoriaController {
 
 
@@ -38,12 +40,12 @@ public class CategoriaController {
                     content = @Content)
     })
     @PostMapping("/")
-    public ResponseEntity<CategoriaSalidaDto> guardar(@RequestBody @Valid CategoriaEntradaDto categoria) {
+    public ResponseEntity<CategoriaSalidaDto> guardarCategoria(@RequestBody @Valid CategoriaEntradaDto categoria) {
         return new ResponseEntity<>(categoriaService.registrarCategoria(categoria), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public  ResponseEntity<Void> eliminar(@PathVariable Long  id) {
+    public  ResponseEntity<Void> eliminarCategoria(@PathVariable Long  id) {
         categoriaService.eliminarCategoriaByID(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -51,4 +53,11 @@ public class CategoriaController {
     ResponseEntity<List<CategoriaSalidaDto>> listarCategorias() {
         return new ResponseEntity<>(categoriaService.listarCategorias(), HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> actualizarCategoria(@PathVariable Long id, @RequestBody @Valid CategoriaModificacionEntradaDto categoria) throws ResourceNotFoundException {
+        categoriaService.actualizarCategoriaByID(id, categoria);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

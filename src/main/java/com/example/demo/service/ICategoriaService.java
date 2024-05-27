@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.entrada.categoria.CategoriaEntradaDto;
+import com.example.demo.dto.modificacion.categoria.CategoriaModificacionEntradaDto;
 import com.example.demo.dto.salida.categoria.CategoriaSalidaDto;
 
 import java.util.List;
@@ -11,4 +12,7 @@ public interface ICategoriaService {
     Void eliminarCategoriaByID(Long id);
 
     List<CategoriaSalidaDto> listarCategorias();
+
+    void actualizarCategoriaByID(Long id, CategoriaModificacionEntradaDto categoria);
+
 }

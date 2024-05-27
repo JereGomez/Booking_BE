@@ -17,6 +17,9 @@ public class Categoria {
     @Column
     private String descripcion;
 
+    public Categoria() {
+    }
+
     public Categoria(Long id, List<Producto> productos, String nombre, String descripcion) {
         this.id = id;
         this.productos = productos;
@@ -30,9 +33,6 @@ public class Categoria {
 
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
-    }
-
-    public Categoria() {
     }
 
     public Categoria(Long id, String nombre, String descripcion) {

@@ -10,4 +10,6 @@ public interface IImagenService {
     ImagenSalidaDto registrarImagen(ImagenEntradaDto imagen);
 
     List<ImagenSalidaDto> listarImagenes();
+
+    void eliminarImagenByID(Long id);
 }

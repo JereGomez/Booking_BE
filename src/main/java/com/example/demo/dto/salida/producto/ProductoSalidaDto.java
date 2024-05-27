@@ -1,9 +1,8 @@
 package com.example.demo.dto.salida.producto;
 
+import com.example.demo.dto.salida.caracteristica.CaracteristicaSalidaDto;
 import com.example.demo.dto.salida.categoria.CategoriaSalidaDto;
 import com.example.demo.dto.salida.imagen.ImagenSalidaDto;
-import com.example.demo.entity.Categoria;
-import com.example.demo.entity.Imagen;
 import com.example.demo.entity.Ubicacion;
 
 import java.util.List;
@@ -22,10 +21,12 @@ public class ProductoSalidaDto {
 
     private List<CategoriaSalidaDto> categorias;
 
+    private List<CaracteristicaSalidaDto> caracteristicas;
+
     public ProductoSalidaDto() {
     }
 
-    public ProductoSalidaDto(Long id, String nombre, String descripcion, Integer capacidad, Double precioNoche, Ubicacion ubicacion, List<ImagenSalidaDto> imagenes, List<CategoriaSalidaDto> categorias) {
+    public ProductoSalidaDto(Long id, String nombre, String descripcion, Integer capacidad, Double precioNoche, Ubicacion ubicacion, List<ImagenSalidaDto> imagenes, List<CategoriaSalidaDto> categorias, List<CaracteristicaSalidaDto> caracteristicas) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -34,6 +35,7 @@ public class ProductoSalidaDto {
         this.ubicacion = ubicacion;
         this.imagenes = imagenes;
         this.categorias = categorias;
+        this.caracteristicas = caracteristicas;
     }
 
 
@@ -101,6 +103,14 @@ public class ProductoSalidaDto {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public List<CaracteristicaSalidaDto> getCaracteristicas() {
+        return caracteristicas;
+    }
+
+    public void setCaracteristicas(List<CaracteristicaSalidaDto> caracteristicas) {
+        this.caracteristicas = caracteristicas;
     }
 
     @Override

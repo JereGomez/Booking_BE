@@ -70,20 +70,9 @@ public class ImagenService implements IImagenService {
         return imagenSalidaDtos;
     }
 
+    @Override
+    public void eliminarImagenByID(Long id) {
 
-    public void eliminarImagenesSegunProducto(Long id) throws ResourceNotFoundException {
-            List<ImagenSalidaDto> imagenes=  listarImagenes();
-            for(ImagenSalidaDto img : imagenes){
-                imagenRepository.deleteById((img.getId()));
-            }
-            LOGGER.warn("Se ha eliminado las imagenes  del producto con id: {}", id);
-    }
-    public List<ImagenSalidaDto >getByProductoId(Long id){
-        List<ImagenSalidaDto> imagenes=  listarImagenes();
-        for(ImagenSalidaDto img : imagenes){
-            if(img.getId() != id) imagenes.remove(imagenes.indexOf(img));
-        }
-        return imagenes;
     }
 
 

@@ -1,10 +1,11 @@
 package com.example.demo.dto.entrada.producto;
 
 
+import com.example.demo.dto.entrada.caracteristica.CaracteristicaEntradaDto;
 import com.example.demo.dto.entrada.categoria.CategoriaEntradaDto;
 import com.example.demo.dto.entrada.imagen.ImagenEntradaDto;
+import com.example.demo.entity.Caracteristica;
 import com.example.demo.entity.Categoria;
-import com.example.demo.entity.Imagen;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +29,9 @@ public class ProductoEntradaDto {
 
     private List<ImagenEntradaDto> imagenes;
 
-    private List<CategoriaEntradaDto> categorias;
+    private List<Categoria> categorias;
+
+    private List<Caracteristica> caracteristicas;
 
     public ProductoEntradaDto() {
     }
@@ -37,20 +40,21 @@ public class ProductoEntradaDto {
         return nombre;
     }
 
-    public ProductoEntradaDto(String nombre, String descripcion, Double precioNoche, int capacidad, List<ImagenEntradaDto> imagenes, List<CategoriaEntradaDto> categorias) {
+    public ProductoEntradaDto(String nombre, String descripcion, Double precioNoche, int capacidad, List<ImagenEntradaDto> imagenes, List<Categoria> categorias, List<Caracteristica> caracteristicas) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precioNoche = precioNoche;
         this.capacidad = capacidad;
         this.imagenes = imagenes;
         this.categorias = categorias;
+        this.caracteristicas = caracteristicas;
     }
 
-    public List<CategoriaEntradaDto> getCategorias() {
+    public List<Categoria> getCategorias() {
         return categorias;
     }
 
-    public void setCategorias(List<CategoriaEntradaDto> categorias) {
+    public void setCategorias(List<Categoria> categorias) {
         this.categorias = categorias;
     }
 
@@ -99,6 +103,14 @@ public class ProductoEntradaDto {
         this.descripcion = descripcion;
     }
 
+
+    public List<Caracteristica> getCaracteristicas() {
+        return caracteristicas;
+    }
+
+    public void setCaracteristicas(List<Caracteristica> caracteristicas) {
+        this.caracteristicas = caracteristicas;
+    }
 
     @Override
     public String toString() {

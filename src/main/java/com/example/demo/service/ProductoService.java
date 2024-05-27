@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class ProductoService implements IProductoService {
+public class ProductoService implements IProductoService{
     private final Logger LOGGER = LoggerFactory.getLogger(ProductoService.class);
     private ProductoRepository productoRepository;
     private ModelMapper modelMapper;
@@ -170,7 +170,7 @@ public class ProductoService implements IProductoService {
         List<Producto> productosPersistidos = productoRepository.findAll();
         for(Producto prod : productosPersistidos){
             LOGGER.info(prod.getNombre() +productoEntidad.getNombre());
-             if((prod.getNombre()).equals( productoEntidad.getNombre())) {flag=true;}
+            if((prod.getNombre()).equals( productoEntidad.getNombre())) {flag=true;}
         }
         return flag;
     }

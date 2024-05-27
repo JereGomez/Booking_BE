@@ -112,7 +112,7 @@ public class ProductoController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<ProductoSalidaDto> actualizarProducto(@PathVariable Long id, @RequestBody ProductoModificacionEntradaDto producto) {
-        return new ResponseEntity<>(productoService.actualizarProducto(id, producto), HttpStatus.OK);
+        return new ResponseEntity<>(productoService.actualizarProducto(producto), HttpStatus.OK);
     }
 
     @Operation(summary = "Eliminación de un producto por Id")

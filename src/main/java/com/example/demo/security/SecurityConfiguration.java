@@ -15,6 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -25,17 +28,17 @@ public class SecurityConfiguration {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry ->{
-                    registry.requestMatchers("auth/login","/home", "/usuarios/registrar/**","/login","usuarios/listar","/logout","usuarios/admin/**").permitAll();//pagina del home inicial y el login, registro de usuarios
-                    registry.requestMatchers("usuarios/admin/**","productos/**","/usuarios/registrar/**","admin/home/**").hasRole("ADMIN");//toda url que tenga admin sera permitido solo para roles admin
-                    registry.requestMatchers("/productos/listar","/usuarios/home/**").hasRole("USER");
+                    registry.requestMatchers("/auth/login","/home", "/usuarios/registrar/**","/login","/usuarios/listar","/logout","/productos/listar").permitAll();//pagina del home inicial y el login, registro de usuarios
+                    registry.requestMatchers("/usuarios/admin/**","admin/home/**","/productos/registrar","/productos/**").hasRole("ADMIN");//toda url que tenga admin sera permitido solo para roles admin
+                    registry.requestMatchers("/usuarios/home/**").hasRole("USER");
                     registry.anyRequest().authenticated();
                 })
-                .formLogin(httpSecurityFormLoginConfigurer -> {
-                    httpSecurityFormLoginConfigurer
-                            .loginPage("/login")
+                //.formLogin(httpSecurityFormLoginConfigurer -> {
+                    //httpSecurityFormLoginConfigurer
+                            //.loginPage("/login")
                             //.successHandler(new AuthenticationSuccessHandler())//esto es para redireccionar al usuario despues de login exitoso.
-                            .permitAll();
-                })
+                            //.permitAll();
+                //})
                 .logout(httpSecurityLogoutConfigurer -> {
                     httpSecurityLogoutConfigurer
                             .logoutUrl("/logout")
@@ -44,7 +47,7 @@ public class SecurityConfiguration {
                             .deleteCookies("JSESSIONID")
                             .permitAll();
                 })
-
+                .httpBasic(withDefaults())
                 .build();
     }
     @Bean

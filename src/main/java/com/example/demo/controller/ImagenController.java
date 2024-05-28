@@ -4,6 +4,7 @@ import com.example.demo.dto.entrada.imagen.ImagenEntradaDto;
 import com.example.demo.dto.salida.imagen.ImagenSalidaDto;
 import com.example.demo.dto.salida.producto.ProductoSalidaDto;
 import com.example.demo.entity.Imagen;
+import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.service.IImagenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("admin/imagenes")
+@RequestMapping("/imagenes")
 public class ImagenController {
 
 
@@ -56,6 +57,11 @@ public class ImagenController {
     @GetMapping("/listar")
     public ResponseEntity<List<ImagenSalidaDto>> listarImagenes() {
         return new ResponseEntity<>(imagenService.listarImagenes(), HttpStatus.OK);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarImagen(@PathVariable Long id) throws ResourceNotFoundException {
+        imagenService.eliminarImagenByID(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

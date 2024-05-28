@@ -36,11 +36,11 @@ public class ImagenModificacionEntradaDto {
         this.id = id;
     }
 
-    public String rutaDeArchivo() {
+    public String getRutaDeArchivo() {
         return rutaDeArchivo;
     }
 
-    public void rutaDeArchivo(String rutaDeArchivo) {
+    public void setRutaDeArchivo(String rutaDeArchivo) {
         this.rutaDeArchivo = rutaDeArchivo;
     }
 

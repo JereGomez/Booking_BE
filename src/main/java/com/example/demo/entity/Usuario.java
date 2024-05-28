@@ -26,7 +26,7 @@ public class Usuario {
     private Rol roles;
     @Column(length = 50)
     private String email;
-    @Column(length = 255)
+    @Column(length = 500)
     private String contrasenia;
     @OneToMany(mappedBy = "usuario")
     private List<Reserva> reservas;

@@ -21,7 +21,7 @@ public class AppUserDetailService implements UserDetailsService {
         if (usuario.isPresent()) {
             var usuarioObj = usuario.get();
             // Asumiendo que el rol está almacenado como una cadena en el campo `rol`
-            String role = "ROLE_" + usuarioObj.getRol().toUpperCase(); // Por ejemplo, "ROLE_ADMIN" o "ROLE_USER"
+            //String role = "ROLE_" + usuarioObj.getRol().toUpperCase(); // Por ejemplo, "ROLE_ADMIN" o "ROLE_USER"
             return User.builder()
                     .username(usuarioObj.getEmail())
                     .password(usuarioObj.getContrasenia())

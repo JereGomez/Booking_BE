@@ -81,7 +81,7 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public UsuarioSalidaDto actualizarUsuario( UsuarioModificacionEntradaDto usuario) {
+    public UsuarioSalidaDto actualizarUsuario( UsuarioModificacionEntradaDto usuario, Long id) {
 
         Usuario usuarioRecibido = modelMapper.map(usuario, Usuario.class);
         Usuario usuarioAActualizar = usuarioRepository.findById(usuarioRecibido.getId()).orElse(null);
@@ -91,11 +91,6 @@ public class UsuarioService implements IUsuarioService {
         if (usuarioAActualizar != null) {
             usuarioAActualizar = usuarioRecibido;
             usuarioRepository.save(usuarioAActualizar);
-           /* for(Imagen img : producto.getImagenes()){
-                ImagenModificacionEntradaDto imagenModificacion = new ImagenModificacionEntradaDto(img.getImagen_id(), img.getNombre(), img.getRutaDeArchivo());
-                ImagenSalidaDto imagenSalida = imagenService.actualizarImagen(imagenModificacion);
-                LOGGER.info("Imagen actualizada: "+imagenSalida);
-            }*/
             usuarioSalidaDto = modelMapper.map(usuarioAActualizar, UsuarioSalidaDto.class);
             LOGGER.warn("Usuario actualizado: {}", JsonPrinter.toString(usuarioSalidaDto));
 

@@ -15,5 +15,5 @@ public interface IUsuarioService {
 
     void eliminarUsuario(Long id) throws ResourceNotFoundException;
 
-    UsuarioSalidaDto actualizarUsuario( UsuarioModificacionEntradaDto usuario);
+    UsuarioSalidaDto actualizarUsuario( UsuarioModificacionEntradaDto usuario,Long id);
 }

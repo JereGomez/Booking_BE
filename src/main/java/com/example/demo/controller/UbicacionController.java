@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("admin/ubicacion")
+@RequestMapping("ubicacion")
 public class UbicacionController {
 
 
@@ -37,7 +37,7 @@ public class UbicacionController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @PostMapping("/registrar")
+    @PostMapping("")
     public ResponseEntity<UbicacionSalidaDto> guardar(@RequestBody @Valid UbicacionEntradaDto ubicacion) {
         return new ResponseEntity<>(ubicacionService.registrarUbicacion(ubicacion), HttpStatus.CREATED);
     }

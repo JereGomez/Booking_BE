@@ -73,7 +73,7 @@ public class UsuarioController {
                     content = @Content)
     })
 
-    @DeleteMapping("admin/eliminarUsuario/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<Void> eliminarUsuario(@PathVariable Long id) throws ResourceNotFoundException {
         usuarioService.eliminarUsuario(id);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -90,9 +90,9 @@ public class UsuarioController {
             @ApiResponse(responseCode = "500", description = "UServer error",
                     content = @Content)
     })
-    @PutMapping("/admin/actualizar")
-    public ResponseEntity<UsuarioSalidaDto> actualizarUsuario(@RequestBody UsuarioModificacionEntradaDto usuario){
-        return new ResponseEntity<>(usuarioService.actualizarUsuario(usuario),HttpStatus.OK);
+    @PutMapping("/admin/{id}")
+    public ResponseEntity<UsuarioSalidaDto> actualizarUsuario(@RequestBody UsuarioModificacionEntradaDto usuario, @PathVariable Long id){
+        return new ResponseEntity<>(usuarioService.actualizarUsuario(usuario, id),HttpStatus.OK);
     }
     @Operation(summary = "Listado de todos los usuarios")
     @ApiResponses(value = {
@@ -106,7 +106,7 @@ public class UsuarioController {
     })
 
 
-    @GetMapping("/listar")
+    @GetMapping("/admin/listar")
     public ResponseEntity<List<UsuarioSalidaDto>> listarUsuarios(){
         return new ResponseEntity<>(usuarioService.listarUsuarios(), HttpStatus.OK);
     }

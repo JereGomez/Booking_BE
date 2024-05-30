@@ -41,7 +41,7 @@ public class LoginAndContentController {
 
             return Collections.singletonMap("role", role);
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Invalid credentials");
+            throw new RuntimeException(e.getMessage());
         }
     }
     @GetMapping("/home")

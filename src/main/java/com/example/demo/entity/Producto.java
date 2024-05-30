@@ -25,7 +25,7 @@ public class Producto {
    @JoinColumn(name="producto_id",referencedColumnName="id")
     private List<Imagen> imagenes;
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
             name="categoria_has_producto",
             joinColumns = @JoinColumn(name="producto_id"),
@@ -33,10 +33,18 @@ public class Producto {
     )
     private List<Categoria> categorias;
 
+    @ManyToMany()
+    @JoinTable(
+            name="producto_has_caracteristica",
+            joinColumns = @JoinColumn(name="producto_id"),
+            inverseJoinColumns = @JoinColumn(name="caracteristica_id")
+    )
+    private List<Caracteristica> caracteristicas;
+
     public Producto() {
     }
 
-    public Producto(Long id, String nombre, String descripcion, Integer capacidad, Double precioNoche, Ubicacion ubicacion, List<Imagen> imagenes, List<Categoria> categorias) {
+    public Producto(Long id, String nombre, String descripcion, Integer capacidad, Double precioNoche, Ubicacion ubicacion, List<Imagen> imagenes, List<Categoria> categorias, List<Caracteristica> caracteristicas) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -45,6 +53,7 @@ public class Producto {
         this.ubicacion = ubicacion;
         this.imagenes = imagenes;
         this.categorias = categorias;
+        this.caracteristicas = caracteristicas;
     }
 
 
@@ -120,7 +129,13 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
+    public List<Caracteristica> getCaracteristicas() {
+        return caracteristicas;
+    }
 
+    public void setCaracteristicas(List<Caracteristica> caracteristicas) {
+        this.caracteristicas = caracteristicas;
+    }
 
     @Override
     public String toString() {

@@ -1,9 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.salida.ubicacion.UbicacionSalidaDto;
+import com.example.demo.dto.salida.usuario.UsuarioSalidaDto;
 import com.example.demo.repository.UsuarioRepository;
+import com.example.demo.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,25 +29,12 @@ public class LoginAndContentController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private UsuarioService usuarioService;
 
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getContrasenia()));
-            //Estoy guardando la autenticacion en el SecurityContextHolder para que este disponible en el resto de la aplicacion
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String role = userDetails.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .findFirst().orElse("");
-
-            return Collections.singletonMap("role", role);
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+    public ResponseEntity<UsuarioSalidaDto> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
+        return new ResponseEntity<>(usuarioService.login(loginRequest, session), HttpStatus.OK);
     }
     @GetMapping("/home")
     public String handleWelcome() {

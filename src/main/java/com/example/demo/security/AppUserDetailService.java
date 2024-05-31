@@ -17,15 +17,14 @@ public class AppUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        Optional<Usuario> usuario = usuarioRepository.findByEmail(userEmail);
-        if (usuario.isPresent()) {
-            var usuarioObj = usuario.get();
+       Usuario usuario = usuarioRepository.findByEmail(userEmail);
+        if (usuario != null) {
             // Asumiendo que el rol está almacenado como una cadena en el campo `rol`
             //String role = "ROLE_" + usuarioObj.getRol().toUpperCase(); // Por ejemplo, "ROLE_ADMIN" o "ROLE_USER"
             return User.builder()
-                    .username(usuarioObj.getEmail())
-                    .password(usuarioObj.getContrasenia())
-                    .roles(getRoles(usuarioObj))
+                    .username(usuario.getEmail())
+                    .password(usuario.getContrasenia())
+                    .roles(getRoles(usuario))
                     .build();
         } else {
             throw new UsernameNotFoundException(userEmail);

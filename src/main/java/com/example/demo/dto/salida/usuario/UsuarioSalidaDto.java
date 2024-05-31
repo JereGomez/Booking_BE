@@ -12,7 +12,6 @@ public class UsuarioSalidaDto {
     private String nombre;
     private String apellido;
     private String email;
-    private String contrasenia;
     private String rol;
     //private Roles roles;
 
@@ -27,9 +26,7 @@ public class UsuarioSalidaDto {
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", email='" + email + '\'' +
-                ", contrasenia='" + contrasenia + '\'' +
                 ", rol='" + rol + '\'' +
-                //", roles=" + roles +
                 '}';
     }
 }

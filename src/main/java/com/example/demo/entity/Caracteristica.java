@@ -13,15 +13,15 @@ public class Caracteristica {
     @Column
     private String nombre;
     @Column
-    private Integer tipo;
+    private String icono;
 
     public Caracteristica() {}
 
-    public Caracteristica(Long id, List<Producto> productos, String nombre, Integer tipo) {
+    public Caracteristica(Long id, List<Producto> productos, String nombre, String icono) {
         this.id = id;
         this.productos = productos;
         this.nombre = nombre;
-        this.tipo = tipo;
+        this.icono = icono;
     }
 
     public Long getId() {
@@ -48,12 +48,12 @@ public class Caracteristica {
         this.nombre = nombre;
     }
 
-    public Integer getTipo() {
-        return tipo;
+    public String getIcono() {
+        return icono;
     }
 
-    public void setTipo(Integer tipo) {
-        this.tipo = tipo;
+    public void setIcono(String icono) {
+        this.icono = icono;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class Caracteristica {
                 "id=" + id +
                 ", productos=" + productos +
                 ", nombre='" + nombre + '\'' +
-                ", tipo=" + tipo +
+                ", icono=" + icono +
                 '}';
     }
 }

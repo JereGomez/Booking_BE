@@ -24,6 +24,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.swing.text.StyledEditorKit;
 import java.util.List;
 
 @RestController
@@ -53,7 +55,7 @@ public class UsuarioController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    public ResponseEntity<UsuarioSalidaDto> guardar(@RequestBody @Valid UsuarioEntradaDto usuario) {
+    public ResponseEntity<UsuarioSalidaDto> guardar(@RequestBody @Valid UsuarioEntradaDto usuario) throws MessagingException {
         usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
         return new ResponseEntity<>(usuarioService.registrarUsuario(usuario), HttpStatus.CREATED);
     }
@@ -109,6 +111,11 @@ public class UsuarioController {
     @GetMapping("/admin/listar")
     public ResponseEntity<List<UsuarioSalidaDto>> listarUsuarios(){
         return new ResponseEntity<>(usuarioService.listarUsuarios(), HttpStatus.OK);
+    }
+
+    @GetMapping("/admin/home")
+    public ResponseEntity<Boolean> adminHome(){
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
 

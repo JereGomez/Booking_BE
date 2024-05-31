@@ -51,7 +51,7 @@ public class LoginAndContentController {
         return "home_user";
     }
     @GetMapping("/logout")
-    public String handlerLogout() {
-        return "logout";
+    public ResponseEntity<UsuarioSalidaDto> logout(HttpSession session) {
+        return new ResponseEntity<>(usuarioService.logout(session), HttpStatus.OK);
     }
 }

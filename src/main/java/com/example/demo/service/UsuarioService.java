@@ -54,7 +54,7 @@ public class UsuarioService implements IUsuarioService {
         Usuario usuarioAPersistir = usuarioRepository.save(usuarioEntidad);
         //transformamos la entidad obtenida en salidaDto
         UsuarioSalidaDto usuarioSalidaDto = modelMapper.map(usuarioAPersistir, UsuarioSalidaDto.class);
-        mailService.send(usuarioSalidaDto.getEmail(), "Su cuenta fue creada exitosamente", "Bienvenido " + usuarioSalidaDto.getNombre() +", gracias por confiar en nosotros. Ya puedes ingresar con tu usuario y encontrar tu proxima aventura!");
+        mailService.send(usuarioSalidaDto.getEmail(), "Su cuenta fue creada exitosamente", "Bienvenido " + usuarioSalidaDto.getNombre() +", gracias por confiar en nosotros. ¡Ya puedes ingresar con tu usuario y encontrar tu próxima aventura!");
         LOGGER.info("UsuarioSalidaDto: " + JsonPrinter.toString(usuarioSalidaDto));
         return usuarioSalidaDto;
 
@@ -141,6 +141,13 @@ public class UsuarioService implements IUsuarioService {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    @Override
+    public UsuarioSalidaDto logout(HttpSession session) {
+        session.invalidate();
+        return null;
+    }
+
     private boolean chequearExistencia(Usuario usuarioEntidad) {
         boolean flag = false;
         List<Usuario> usuariosPersistidos = usuarioRepository.findAll();

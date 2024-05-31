@@ -23,4 +23,6 @@ public interface IUsuarioService {
     UsuarioSalidaDto actualizarUsuario( UsuarioModificacionEntradaDto usuario,Long id);
 
     UsuarioSalidaDto login(LoginRequest loginRequest, HttpSession session);
+
+    UsuarioSalidaDto logout(HttpSession session);
 }

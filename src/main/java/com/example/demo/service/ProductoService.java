@@ -146,6 +146,16 @@ public class ProductoService implements IProductoService{
         return productoSalidaDtos;
     }
 
+    @Override
+    public List<ProductoSalidaDto> buscarProductosPorNombre(String nombre) throws ResourceNotFoundException {
+        List<ProductoSalidaDto> productoSalidaDtos = productoRepository.findByNombreContaining(nombre)
+                .stream()
+                .map(producto -> modelMapper.map(producto, ProductoSalidaDto.class))
+                .toList();
+        LOGGER.info("Listado de todos los productos que coinciden con el nombre enviado: {}", JsonPrinter.toString(productoSalidaDtos));
+        return productoSalidaDtos;
+    }
+
     private void configureMapping() {
         //PRODUCTOS
         modelMapper.typeMap(ProductoEntradaDto.class, Producto.class);

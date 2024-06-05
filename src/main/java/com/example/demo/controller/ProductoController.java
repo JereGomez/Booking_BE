@@ -133,5 +133,9 @@ public class ProductoController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
+    @GetMapping("/nombres")
+    public ResponseEntity<List<ProductoSalidaDto>> buscarProductosPorNombre(@RequestParam String nombre) throws ResourceNotFoundException {
+        List<ProductoSalidaDto> productos = productoService.buscarProductosPorNombre(nombre);
+        return new ResponseEntity<>(productos, HttpStatus.OK);
+    }
 }

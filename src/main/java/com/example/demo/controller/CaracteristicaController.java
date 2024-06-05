@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/caracteristica")
+@RequestMapping("/caracteristicas")
 public class CaracteristicaController {
     public ICaracteristicaService caracteristicaService;
 
@@ -40,12 +40,12 @@ public class CaracteristicaController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @PostMapping("/")
+    @PostMapping("/admin/")
     public ResponseEntity<CaracteristicaSalidaDto> guardarCaracteristica(@RequestBody @Valid CaracteristicaEntradaDto caracteristica) {
         return new ResponseEntity<>(caracteristicaService.registrarCaracteristica(caracteristica), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public  ResponseEntity<Void> eliminarCaracteristica(@PathVariable Long  id) {
         caracteristicaService.eliminarCaracteristicaByID(id);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -55,7 +55,7 @@ public class CaracteristicaController {
         return new ResponseEntity<>(caracteristicaService.listarCaracteristicas(), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public ResponseEntity<Void> actualizarCaracteristica(@PathVariable Long id, @RequestBody @Valid CaracteristicaModificacionEntradaDto caracteristica) throws ResourceNotFoundException {
         caracteristicaService.actualizarCaracteristicaByID(id,caracteristica);
         return new ResponseEntity<>(HttpStatus.OK);

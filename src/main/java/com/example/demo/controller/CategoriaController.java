@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categoria")
+@RequestMapping("/categorias")
 public class CategoriaController {
 
 
@@ -39,12 +39,12 @@ public class CategoriaController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @PostMapping("/")
+    @PostMapping("/admin/")
     public ResponseEntity<CategoriaSalidaDto> guardarCategoria(@RequestBody @Valid CategoriaEntradaDto categoria) {
         return new ResponseEntity<>(categoriaService.registrarCategoria(categoria), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public  ResponseEntity<Void> eliminarCategoria(@PathVariable Long  id) {
         categoriaService.eliminarCategoriaByID(id);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -54,7 +54,7 @@ public class CategoriaController {
         return new ResponseEntity<>(categoriaService.listarCategorias(), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public ResponseEntity<Void> actualizarCategoria(@PathVariable Long id, @RequestBody @Valid CategoriaModificacionEntradaDto categoria) throws ResourceNotFoundException {
         categoriaService.actualizarCategoriaByID(id, categoria);
         return new ResponseEntity<>(HttpStatus.OK);

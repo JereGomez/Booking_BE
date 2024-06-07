@@ -15,19 +15,17 @@ public class UbicacionModificacionEntradaDto {
     private int codigoPostal;
     @NotNull(message = "Debe proveerse la direccion exacta de la ubicacion que se desea modificar")
     private String direccionExacta;
-    @NotNull(message = "Debe proveerse las coordenas via gps de la ubicacion que se desea modificar")
-    private BigDecimal coordenadaGps;
+
 
     public UbicacionModificacionEntradaDto() {
     }
 
-    public UbicacionModificacionEntradaDto(Long id, String pais, String ciudad, int codigoPostal, String direccionExacta, BigDecimal coordenadaGps) {
+    public UbicacionModificacionEntradaDto(Long id, String pais, String ciudad, int codigoPostal, String direccionExacta) {
         this.id = id;
         this.pais = pais;
         this.ciudad = ciudad;
         this.codigoPostal = codigoPostal;
         this.direccionExacta = direccionExacta;
-        this.coordenadaGps = coordenadaGps;
     }
 
     public Long getId() {
@@ -70,13 +68,6 @@ public class UbicacionModificacionEntradaDto {
         this.direccionExacta = direccionExacta;
     }
 
-    public BigDecimal getCoordenadaGps() {
-        return coordenadaGps;
-    }
-
-    public void setCoordenadaGps(BigDecimal coordenadaGps) {
-        this.coordenadaGps = coordenadaGps;
-    }
 
     @Override
     public String toString() {
@@ -85,7 +76,6 @@ public class UbicacionModificacionEntradaDto {
                 ", ciudad='" + ciudad + '\'' +
                 ", codigoPostal=" + codigoPostal +
                 ", direccionExacta='" + direccionExacta + '\'' +
-                ", coordenadaGps=" + coordenadaGps +
                 '}';
     }
 }

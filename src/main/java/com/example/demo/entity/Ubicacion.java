@@ -15,18 +15,16 @@ public class Ubicacion {
     private String ciudad;
     private Long codigoPostal;
     private String direccion_exacta;
-    private int coordenada_gps;
 
     public Ubicacion() {
     }
 
-    public Ubicacion(Long id, String pais, String ciudad, Long codigoPostal, String direccion_exacta, int coordenada_gps) {
+    public Ubicacion(Long id, String pais, String ciudad, Long codigoPostal, String direccion_exacta) {
         this.id = id;
         this.pais = pais;
         this.ciudad = ciudad;
         this.codigoPostal = codigoPostal;
         this.direccion_exacta = direccion_exacta;
-        this.coordenada_gps = coordenada_gps;
     }
 
     public Long getId() {
@@ -70,13 +68,6 @@ public class Ubicacion {
         this.direccion_exacta = direccion_exacta;
     }
 
-    public int getCoordenada_gps() {
-        return coordenada_gps;
-    }
-
-    public void setCoordenada_gps(int coordenada_gps) {
-        this.coordenada_gps = coordenada_gps;
-    }
 
     @Override
     public String toString() {
@@ -87,7 +78,6 @@ public class Ubicacion {
                 ", ciudad='" + ciudad + '\'' +
                 ", codigoPostal=" + codigoPostal +
                 ", direccion_exacta='" + direccion_exacta + '\'' +
-                ", coordenada_gps=" + coordenada_gps +
                 '}';
     }
 

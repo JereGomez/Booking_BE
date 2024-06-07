@@ -1,15 +1,15 @@
 package com.example.demo.dto.entrada.producto;
 
 
-import com.example.demo.dto.entrada.caracteristica.CaracteristicaEntradaDto;
-import com.example.demo.dto.entrada.categoria.CategoriaEntradaDto;
 import com.example.demo.dto.entrada.imagen.ImagenEntradaDto;
+import com.example.demo.dto.entrada.ubicacion.UbicacionEntradaDto;
 import com.example.demo.entity.Caracteristica;
 import com.example.demo.entity.Categoria;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.Date;
 import java.util.List;
 
 public class ProductoEntradaDto {
@@ -27,11 +27,19 @@ public class ProductoEntradaDto {
 
     private int capacidad;
 
+
+    private Date disponibilidad_Desde;
+
+
+    private Date disponibilidad_Hasta;
+
+    private UbicacionEntradaDto ubicacion;
     private List<ImagenEntradaDto> imagenes;
 
     private List<Categoria> categorias;
 
     private List<Caracteristica> caracteristicas;
+
 
     public ProductoEntradaDto() {
     }
@@ -40,11 +48,14 @@ public class ProductoEntradaDto {
         return nombre;
     }
 
-    public ProductoEntradaDto(String nombre, String descripcion, Double precioNoche, int capacidad, List<ImagenEntradaDto> imagenes, List<Categoria> categorias, List<Caracteristica> caracteristicas) {
+    public ProductoEntradaDto(String nombre, String descripcion, Double precioNoche, int capacidad, Date disponibilidadDesde, Date disponibilidadHasta, UbicacionEntradaDto ubicacion, List<ImagenEntradaDto> imagenes, List<Categoria> categorias, List<Caracteristica> caracteristicas) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precioNoche = precioNoche;
         this.capacidad = capacidad;
+        disponibilidad_Desde = disponibilidadDesde;
+        disponibilidad_Hasta = disponibilidadHasta;
+        this.ubicacion = ubicacion;
         this.imagenes = imagenes;
         this.categorias = categorias;
         this.caracteristicas = caracteristicas;
@@ -110,6 +121,30 @@ public class ProductoEntradaDto {
 
     public void setCaracteristicas(List<Caracteristica> caracteristicas) {
         this.caracteristicas = caracteristicas;
+    }
+
+    public Date getDisponibilidad_Desde() {
+        return disponibilidad_Desde;
+    }
+
+    public void setDisponibilidad_Desde(Date disponibilidad_Desde) {
+        this.disponibilidad_Desde = disponibilidad_Desde;
+    }
+
+    public Date getDisponibilidad_Hasta() {
+        return disponibilidad_Hasta;
+    }
+
+    public void setDisponibilidad_Hasta(Date disponibilidad_Hasta) {
+        this.disponibilidad_Hasta = disponibilidad_Hasta;
+    }
+
+    public UbicacionEntradaDto getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(UbicacionEntradaDto ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
     @Override

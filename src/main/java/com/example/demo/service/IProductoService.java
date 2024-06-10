@@ -24,4 +24,5 @@ public interface IProductoService {
     ProductoSalidaDto actualizarProducto(Long id,ProductoModificacionEntradaDto producto);
 
     List<ProductoSalidaDto> listarProductosPorCategorias(List<Categoria> categorias);
+    List<ProductoSalidaDto> buscarProductosPorNombre(String nombre) throws ResourceNotFoundException;
 }

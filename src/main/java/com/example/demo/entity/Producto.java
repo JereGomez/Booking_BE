@@ -24,7 +24,7 @@ public class Producto {
 
     @Column()
     private Date disponibilidad_Hasta;
-    @OneToOne(cascade=CascadeType.ALL )
+    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST )
     @JoinColumn(name = "ubicacion_id")
     private Ubicacion ubicacion;
 

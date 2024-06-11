@@ -117,6 +117,7 @@ public class ProductoService implements IProductoService{
         ProductoSalidaDto productoSalidaDto = null;
 
         if (productoAActualizar != null) {
+            productoRecibido.setUbicacion(productoAActualizar.getUbicacion());
             productoAActualizar = productoRecibido;
             productoRepository.save(productoAActualizar);
             productoSalidaDto = modelMapper.map(productoAActualizar, ProductoSalidaDto.class);

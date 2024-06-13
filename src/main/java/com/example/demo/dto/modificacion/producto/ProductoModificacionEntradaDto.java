@@ -1,7 +1,5 @@
 package com.example.demo.dto.modificacion.producto;
 
-import com.example.demo.dto.modificacion.caracteristica.CaracteristicaModificacionEntradaDto;
-import com.example.demo.dto.modificacion.categoria.CategoriaModificacionEntradaDto;
 import com.example.demo.dto.modificacion.imagen.ImagenModificacionEntradaDto;
 import com.example.demo.dto.modificacion.ubicacion.UbicacionModificacionEntradaDto;
 import com.example.demo.entity.Caracteristica;

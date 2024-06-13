@@ -3,8 +3,10 @@ package com.example.demo.dto.salida.producto;
 import com.example.demo.dto.salida.caracteristica.CaracteristicaSalidaDto;
 import com.example.demo.dto.salida.categoria.CategoriaSalidaDto;
 import com.example.demo.dto.salida.imagen.ImagenSalidaDto;
+import com.example.demo.dto.salida.ubicacion.UbicacionSalidaDto;
 import com.example.demo.entity.Ubicacion;
 
+import java.util.Date;
 import java.util.List;
 
 public class ProductoSalidaDto {
@@ -16,7 +18,11 @@ public class ProductoSalidaDto {
 
     private Double precioNoche;
 
-    private Ubicacion ubicacion;
+    private Date disponibilidad_Desde;
+
+    private Date disponibilidad_Hasta;
+
+    private UbicacionSalidaDto ubicacion;
     private List<ImagenSalidaDto> imagenes;
 
     private List<CategoriaSalidaDto> categorias;
@@ -26,13 +32,15 @@ public class ProductoSalidaDto {
     public ProductoSalidaDto() {
     }
 
-    public ProductoSalidaDto(Long id, String nombre, String descripcion, Integer capacidad, Double precioNoche, Ubicacion ubicacion, List<ImagenSalidaDto> imagenes, List<CategoriaSalidaDto> categorias, List<CaracteristicaSalidaDto> caracteristicas) {
+    public ProductoSalidaDto(Long id, String nombre, String descripcion, Integer capacidad, Double precioNoche, UbicacionSalidaDto ubicacion, Date disponibilidadDesde, Date disponibilidadHasta, List<ImagenSalidaDto> imagenes, List<CategoriaSalidaDto> categorias, List<CaracteristicaSalidaDto> caracteristicas) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.capacidad = capacidad;
         this.precioNoche = precioNoche;
         this.ubicacion = ubicacion;
+        disponibilidad_Desde = disponibilidadDesde;
+        disponibilidad_Hasta = disponibilidadHasta;
         this.imagenes = imagenes;
         this.categorias = categorias;
         this.caracteristicas = caracteristicas;
@@ -55,11 +63,11 @@ public class ProductoSalidaDto {
         this.precioNoche = precioNoche;
     }
 
-    public Ubicacion getUbicacion() {
+    public UbicacionSalidaDto getUbicacion() {
         return ubicacion;
     }
 
-    public void setUbicacion(Ubicacion ubicacion) {
+    public void setUbicacion(UbicacionSalidaDto ubicacion) {
         this.ubicacion = ubicacion;
     }
 
@@ -111,6 +119,22 @@ public class ProductoSalidaDto {
 
     public void setCaracteristicas(List<CaracteristicaSalidaDto> caracteristicas) {
         this.caracteristicas = caracteristicas;
+    }
+
+    public Date getDisponibilidad_Desde() {
+        return disponibilidad_Desde;
+    }
+
+    public void setDisponibilidad_Desde(Date disponibilidad_Desde) {
+        this.disponibilidad_Desde = disponibilidad_Desde;
+    }
+
+    public Date getDisponibilidad_Hasta() {
+        return disponibilidad_Hasta;
+    }
+
+    public void setDisponibilidad_Hasta(Date disponibilidad_Hasta) {
+        this.disponibilidad_Hasta = disponibilidad_Hasta;
     }
 
     @Override

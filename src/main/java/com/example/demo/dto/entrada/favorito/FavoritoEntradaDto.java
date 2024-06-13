@@ -13,6 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FavoritoEntradaDto {
     private String nombre;
-    private UsuarioSalidaDto usuarioSalidaDto;
-    private ProductoSalidaDto productoSalidaDto;
+    private Long usuarioSalidaDtoId;
+    private Long productoSalidaDtoId;
 }

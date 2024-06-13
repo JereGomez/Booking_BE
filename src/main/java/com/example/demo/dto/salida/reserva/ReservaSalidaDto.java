@@ -1,63 +1,75 @@
 package com.example.demo.dto.salida.reserva;
 
 
+import com.example.demo.dto.salida.producto.ProductoSalidaDto;
+import com.example.demo.dto.salida.usuario.UsuarioSalidaDto;
 import com.example.demo.entity.Producto;
 import com.example.demo.entity.Usuario;
 
 import java.time.LocalDate;
 
 public class ReservaSalidaDto {
-    private Producto alojamiento;
-    private Usuario usuario;
+    private Long id;
+    private ProductoSalidaDto productoSalidaDto;
+    private UsuarioSalidaDto usuarioSalidaDto;
 
-    private LocalDate fecha_inicio;
+    private LocalDate fechaInicio;
 
-    private LocalDate fecha_fin;
+    private LocalDate fechaFin;
     private String estado;
-    private double precio;
+    private double precio_total;
 
     public ReservaSalidaDto() {
     }
 
-    public ReservaSalidaDto(Producto alojamiento, Usuario usuario, LocalDate fecha_inicio, LocalDate fecha_fin, String estado, double precio) {
-        this.alojamiento = alojamiento;
-        this.usuario = usuario;
-        this.fecha_inicio = fecha_inicio;
-        this.fecha_fin = fecha_fin;
+    public ReservaSalidaDto(Long id, ProductoSalidaDto productoSalidaDto, UsuarioSalidaDto usuarioSalidaDto, LocalDate fechaInicio, LocalDate fechaFin, String estado, double precio_total) {
+        this.id = id;
+        this.productoSalidaDto = productoSalidaDto;
+        this.usuarioSalidaDto = usuarioSalidaDto;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
         this.estado = estado;
-        this.precio = precio;
+        this.precio_total = precio_total;
     }
 
-    public Producto getAlojamiento() {
-        return alojamiento;
+    public Long getId() {
+        return id;
     }
 
-    public void setAlojamiento(Producto alojamiento) {
-        this.alojamiento = alojamiento;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public ProductoSalidaDto getProductoSalidaDto() {
+        return productoSalidaDto;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setProductoSalidaDto(ProductoSalidaDto productoSalidaDto) {
+        this.productoSalidaDto = productoSalidaDto;
     }
 
-    public LocalDate getFecha_inicio() {
-        return fecha_inicio;
+    public UsuarioSalidaDto getUsuarioSalidaDto() {
+        return usuarioSalidaDto;
     }
 
-    public void setFecha_inicio(LocalDate fecha_inicio) {
-        this.fecha_inicio = fecha_inicio;
+    public void setUsuarioSalidaDto(UsuarioSalidaDto usuarioSalidaDto) {
+        this.usuarioSalidaDto = usuarioSalidaDto;
     }
 
-    public LocalDate getFecha_fin() {
-        return fecha_fin;
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
     }
 
-    public void setFecha_fin(LocalDate fecha_fin) {
-        this.fecha_fin = fecha_fin;
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public LocalDate getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(LocalDate fechaFin) {
+        this.fechaFin = fechaFin;
     }
 
     public String getEstado() {
@@ -68,23 +80,24 @@ public class ReservaSalidaDto {
         this.estado = estado;
     }
 
-    public double getPrecio() {
-        return precio;
+    public double getPrecio_total() {
+        return precio_total;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    public void setPrecio_total(double precio_total) {
+        this.precio_total = precio_total;
     }
 
     @Override
     public String toString() {
         return "ReservaSalidaDto{" +
-                "alojamiento=" + alojamiento +
-                ", usuario=" + usuario +
-                ", fecha_inicio=" + fecha_inicio +
-                ", fecha_fin=" + fecha_fin +
+                "id=" + id +
+                ", productoSalidaDto=" + productoSalidaDto +
+                ", usuarioSalidaDto=" + usuarioSalidaDto +
+                ", fechaInicio=" + fechaInicio +
+                ", fechaFin=" + fechaFin +
                 ", estado='" + estado + '\'' +
-                ", precio=" + precio +
+                ", precio_total=" + precio_total +
                 '}';
     }
 }

@@ -4,6 +4,7 @@ import com.example.demo.dto.entrada.usuario.UsuarioEntradaDto;
 import com.example.demo.dto.modificacion.usuario.UsuarioModificacionEntradaDto;
 import com.example.demo.dto.salida.usuario.UsuarioSalidaDto;
 import com.example.demo.entity.Usuario;
+import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.utils.JsonPrinter;
@@ -29,32 +30,44 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public UsuarioSalidaDto registrarUsuario(UsuarioEntradaDto usuario) {
+    public UsuarioSalidaDto registrarUsuario(UsuarioEntradaDto usuario) throws BadRequestException {
 
         LOGGER.info("UsuarioEntradaDto: " + JsonPrinter.toString(usuario));
+        //chek existencia categorias/caracteristicas, y si no existen se crean
         Usuario usuarioEntidad = modelMapper.map(usuario, Usuario.class);
+        boolean usuarioExiste = chequearExistencia(usuarioEntidad);
+        if(usuarioExiste == true){
+            LOGGER.error("Ya existe un usuario con ese nombre{}", usuario.getNombre());
+            BadRequestException exception = new BadRequestException("Ya existe un usuario con ese nombre ${usuario.getNombre()}");
+            throw exception;
+        }
+        else{
+            //mandamos a persistir a la capa dao y obtenemos una entidad
+            Usuario usuarioAPersistir = usuarioRepository.save(usuarioEntidad);
 
-        //mandamos a persistir a la capa dao y obtenemos una entidad
-        Usuario usuarioAPersistir = usuarioRepository.save(usuarioEntidad);
-        //transformamos la entidad obtenida en salidaDto
-        UsuarioSalidaDto usuarioSalidaDto = modelMapper.map(usuarioAPersistir, UsuarioSalidaDto.class);
-        LOGGER.info("UsuarioSalidaDto: " + JsonPrinter.toString(usuarioSalidaDto));
-        return usuarioSalidaDto;
+            //transformamos la entidad obtenida en salidaDto
+            UsuarioSalidaDto usuarioSalidaDto = modelMapper.map(usuarioAPersistir, UsuarioSalidaDto.class);
+            LOGGER.info("UsuarioSalidaDto: " + JsonPrinter.toString(usuarioSalidaDto));
+            return usuarioSalidaDto;
+        }
 
     }
 
     @Override
-    public List<UsuarioSalidaDto> listarUsuarios() {
+    public List<UsuarioSalidaDto> listarUsuarios() throws ResourceNotFoundException {
         List<UsuarioSalidaDto> usuarioSalidaDtos = usuarioRepository.findAll()
                 .stream()
                 .map(usuario -> modelMapper.map(usuario, UsuarioSalidaDto.class))
                 .toList();
+        if (usuarioSalidaDtos.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron usuarios.");
+        }
         LOGGER.info("Listado de todos los usuarios: {}", JsonPrinter.toString(usuarioSalidaDtos));
         return usuarioSalidaDtos;
     }
 
     @Override
-    public UsuarioSalidaDto buscarUsuarioPorId(Long id) {
+    public UsuarioSalidaDto buscarUsuarioPorId(Long id) throws ResourceNotFoundException{
         Usuario usuarioBuscado = usuarioRepository.findById(id).orElse(null);
         UsuarioSalidaDto usuarioEncontrado = null;
 
@@ -62,7 +75,10 @@ public class UsuarioService implements IUsuarioService {
         if (usuarioBuscado != null) {
             usuarioEncontrado = modelMapper.map(usuarioBuscado, UsuarioSalidaDto.class);
             LOGGER.info("Usuario encontrado: {}", JsonPrinter.toString(usuarioEncontrado));
-        } else LOGGER.error("El id no se encuentra registrado en la base de datos");
+        } else{
+            LOGGER.error("El id no se encuentra registrado en la base de datos");
+            throw new ResourceNotFoundException("No se ha encontrado el usuario con id " + id);
+        }
 
         return usuarioEncontrado;
     }
@@ -81,7 +97,7 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public UsuarioSalidaDto actualizarUsuario( UsuarioModificacionEntradaDto usuario) {
+    public UsuarioSalidaDto actualizarUsuario( UsuarioModificacionEntradaDto usuario)throws ResourceNotFoundException  {
 
         Usuario usuarioRecibido = modelMapper.map(usuario, Usuario.class);
         Usuario usuarioAActualizar = usuarioRepository.findById(usuarioRecibido.getId()).orElse(null);
@@ -101,6 +117,7 @@ public class UsuarioService implements IUsuarioService {
 
         } else {
             LOGGER.error("No fue posible actualizar el usuario porque no se encuentra en nuestra base de datos");
+            throw new ResourceNotFoundException("No fue posible actualizar el usuario porque no se encuentra en nuestra base de datos");
             //lanzar excepcion correspondiente
         }
 

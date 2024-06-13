@@ -53,7 +53,7 @@ public class UsuarioController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    public ResponseEntity<UsuarioSalidaDto> guardar(@RequestBody @Valid UsuarioEntradaDto usuario) {
+    public ResponseEntity<UsuarioSalidaDto> guardar(@RequestBody @Valid UsuarioEntradaDto usuario)throws BadRequestException {
         usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
         return new ResponseEntity<>(usuarioService.registrarUsuario(usuario), HttpStatus.CREATED);
     }
@@ -91,7 +91,7 @@ public class UsuarioController {
                     content = @Content)
     })
     @PutMapping("/admin/actualizar")
-    public ResponseEntity<UsuarioSalidaDto> actualizarUsuario(@RequestBody UsuarioModificacionEntradaDto usuario){
+    public ResponseEntity<UsuarioSalidaDto> actualizarUsuario(@RequestBody UsuarioModificacionEntradaDto usuario)throws ResourceNotFoundException{
         return new ResponseEntity<>(usuarioService.actualizarUsuario(usuario),HttpStatus.OK);
     }
     @Operation(summary = "Listado de todos los usuarios")
@@ -107,7 +107,7 @@ public class UsuarioController {
 
 
     @GetMapping("/listar")
-    public ResponseEntity<List<UsuarioSalidaDto>> listarUsuarios(){
+    public ResponseEntity<List<UsuarioSalidaDto>> listarUsuarios()throws ResourceNotFoundException{
         return new ResponseEntity<>(usuarioService.listarUsuarios(), HttpStatus.OK);
     }
 

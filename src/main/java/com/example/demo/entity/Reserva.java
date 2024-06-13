@@ -10,27 +10,32 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @ManyToOne
     @JoinColumn(name = "producto_id")
     private Producto producto;
+
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    private LocalDate fecha_inicio;
-    private LocalDate fecha_fin;
+    @Column(name = "fecha_inicio")
+    private LocalDate fechaInicio;
+
+    @Column(name = "fecha_fin")
+    private LocalDate fechaFin;
+
     private String estado;
     private double precio_total;
-
 
     public Reserva() {
     }
 
-    public Reserva(Long id, Producto alojamiento, Usuario usuario, LocalDate fecha_inicio, LocalDate fecha_fin, String estado, double precio_total) {
+    public Reserva(Long id, Producto producto, Usuario usuario, LocalDate fechaInicio, LocalDate fechaFin, String estado, double precio_total) {
         this.id = id;
-        this.fecha_inicio = fecha_inicio;
-        this.fecha_fin = fecha_fin;
+        this.producto = producto;
+        this.usuario = usuario;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
         this.estado = estado;
         this.precio_total = precio_total;
     }
@@ -39,40 +44,68 @@ public class Reserva {
         return id;
     }
 
-    public Producto geProducto() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Producto getProducto() {
         return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public Usuario getUsuario() {
         return usuario;
     }
 
-    public LocalDate getFecha_inicio() {
-        return fecha_inicio;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public LocalDate getFecha_fin() {
-        return fecha_fin;
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public LocalDate getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(LocalDate fechaFin) {
+        this.fechaFin = fechaFin;
     }
 
     public String getEstado() {
         return estado;
     }
 
-    public double getPrecio() {
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public double getPrecio_total() {
         return precio_total;
+    }
+
+    public void setPrecio_total(double precio_total) {
+        this.precio_total = precio_total;
     }
 
     @Override
     public String toString() {
         return "Reserva{" +
                 "id=" + id +
-                ", alojamiento=" + producto +
+                ", producto=" + producto +
                 ", usuario=" + usuario +
-                ", fecha_inicio=" + fecha_inicio +
-                ", fecha_fin=" + fecha_fin +
+                ", fechaInicio=" + fechaInicio +
+                ", fechaFin=" + fechaFin +
                 ", estado='" + estado + '\'' +
-                ", precio=" + precio_total +
+                ", precio_total=" + precio_total +
                 '}';
     }
 }

@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,12 +18,18 @@ public class Producto {
     private Integer capacidad;
     @Column()
     private Double precioNoche;
-    @OneToOne
+
+    @Column()
+    private Date disponibilidad_Desde;
+
+    @Column()
+    private Date disponibilidad_Hasta;
+    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST )
     @JoinColumn(name = "ubicacion_id")
     private Ubicacion ubicacion;
 
-   @OneToMany(cascade=CascadeType.ALL )
-   @JoinColumn(name="producto_id",referencedColumnName="id")
+    @OneToMany(cascade=CascadeType.ALL )
+    @JoinColumn(name="producto_id",referencedColumnName="id")
     private List<Imagen> imagenes;
 
     @ManyToMany()
@@ -44,12 +51,14 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(Long id, String nombre, String descripcion, Integer capacidad, Double precioNoche, Ubicacion ubicacion, List<Imagen> imagenes, List<Categoria> categorias, List<Caracteristica> caracteristicas) {
+    public Producto(Long id, String nombre, String descripcion, Integer capacidad, Double precioNoche, Date disponibilidadDesde, Date disponibilidadHasta, Ubicacion ubicacion, List<Imagen> imagenes, List<Categoria> categorias, List<Caracteristica> caracteristicas) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.capacidad = capacidad;
         this.precioNoche = precioNoche;
+        this.disponibilidad_Desde = disponibilidadDesde;
+        this.disponibilidad_Hasta = disponibilidadHasta;
         this.ubicacion = ubicacion;
         this.imagenes = imagenes;
         this.categorias = categorias;
@@ -135,6 +144,22 @@ public class Producto {
 
     public void setCaracteristicas(List<Caracteristica> caracteristicas) {
         this.caracteristicas = caracteristicas;
+    }
+
+    public Date getDisponibilidad_Desde() {
+        return disponibilidad_Desde;
+    }
+
+    public void setDisponibilidad_Desde(Date disponibilidad_Desde) {
+        this.disponibilidad_Desde = disponibilidad_Desde;
+    }
+
+    public Date getDisponibilidad_Hasta() {
+        return disponibilidad_Hasta;
+    }
+
+    public void setDisponibilidad_Hasta(Date disponibilidad_Hasta) {
+        this.disponibilidad_Hasta = disponibilidad_Hasta;
     }
 
     @Override

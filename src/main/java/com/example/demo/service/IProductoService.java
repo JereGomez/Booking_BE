@@ -15,13 +15,13 @@ import java.util.Set;
 public interface IProductoService {
     ProductoSalidaDto registrarProducto(ProductoEntradaDto producto) throws BadRequestException;
 
-    List<ProductoSalidaDto> listarProductos();
+    List<ProductoSalidaDto> listarProductos()throws ResourceNotFoundException;
 
-    ProductoSalidaDto buscarProductoPorId(Long id);
+    ProductoSalidaDto buscarProductoPorId(Long id)throws ResourceNotFoundException;
 
     void eliminarProducto(Long id) throws ResourceNotFoundException;
 
-    ProductoSalidaDto actualizarProducto(Long id,ProductoModificacionEntradaDto producto);
+    ProductoSalidaDto actualizarProducto(Long id,ProductoModificacionEntradaDto producto)throws ResourceNotFoundException;
 
     List<ProductoSalidaDto> listarProductosPorCategorias(List<Categoria> categorias);
     List<ProductoSalidaDto> buscarProductosPorNombre(String nombre) throws ResourceNotFoundException;

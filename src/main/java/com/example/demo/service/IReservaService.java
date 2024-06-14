@@ -9,4 +9,5 @@ import java.util.List;
 public interface IReservaService {
     ReservaSalidaDto registrarReserva(ReservaEntradaDto reserva) throws BadRequestException;
     List<ReservaSalidaDto> listarReservas();
+    List<ReservaSalidaDto> obtenerReservasPorUsuario(String emailUsuario);
 }

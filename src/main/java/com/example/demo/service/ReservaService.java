@@ -23,6 +23,8 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ReservaService implements IReservaService {
     private final Logger LOGGER = LoggerFactory.getLogger(ReservaService.class);
@@ -109,6 +111,13 @@ public class ReservaService implements IReservaService {
         //}
         LOGGER.info("Listado de reservas: {}", JsonPrinter.toString(reservaSalidaDtos));
         return reservaSalidaDtos;
+    }
+    @Override
+    public List<ReservaSalidaDto> obtenerReservasPorUsuario(String emailUsuario) {
+        List<Reserva> reservas = reservaRepository.findByUsuarioEmail(emailUsuario);
+        return reservas.stream()
+                .map(reserva -> modelMapper.map(reserva, ReservaSalidaDto.class))
+                .collect(Collectors.toList());
     }
 
     public double calcularPrecioTotal(LocalDate fechaInicio, LocalDate fechaFin, double precioNoche) {

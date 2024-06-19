@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.entrada.reserva.ReservaEntradaDto;
 import com.example.demo.dto.salida.reserva.ReservaSalidaDto;
 import com.example.demo.exceptions.BadRequestException;
+import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.service.IReservaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -40,7 +41,7 @@ public class ReservaController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    public ResponseEntity<ReservaSalidaDto> guardar(@RequestBody @Valid ReservaEntradaDto reserva) throws BadRequestException {
+    public ResponseEntity<ReservaSalidaDto> guardar(@RequestBody @Valid ReservaEntradaDto reserva) throws BadRequestException, ResourceNotFoundException {
         return new ResponseEntity<>(reservaService.registrarReserva(reserva), HttpStatus.CREATED);
     }
     @Operation(summary = "Listado de todas las Reservas")

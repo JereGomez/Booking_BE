@@ -1,12 +1,17 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.entrada.reserva.ReservaEntradaDto;
+import com.example.demo.dto.salida.favorito.FavoritoSalidaDto;
 import com.example.demo.dto.salida.imagen.ImagenSalidaDto;
+import com.example.demo.dto.salida.producto.ProductoSalidaDto;
 import com.example.demo.dto.salida.reserva.ReservaSalidaDto;
+import com.example.demo.dto.salida.usuario.UsuarioSalidaDto;
+import com.example.demo.entity.Favorito;
 import com.example.demo.entity.Producto;
 import com.example.demo.entity.Reserva;
 import com.example.demo.entity.Usuario;
 import com.example.demo.exceptions.BadRequestException;
+import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.repository.ProductoRepository;
 import com.example.demo.repository.ReservaRepository;
 import com.example.demo.repository.UsuarioRepository;
@@ -33,37 +38,50 @@ public class ReservaService implements IReservaService {
     private ReservaRepository reservaRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     @Autowired
-    private ProductoRepository productoRepository;
+    private ProductoService productoService;
 
     @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
     private ImagenService imagenService;
+    @Autowired
+    private EmailService emailService;
 
-    public ReservaService(ReservaRepository reservaRepository, ModelMapper modelMapper, ImagenService imagenService) {
+
+    public ReservaService(ReservaRepository reservaRepository, UsuarioService usuarioService, ProductoService productoService, ModelMapper modelMapper, ImagenService imagenService,EmailService emailService) {
         this.reservaRepository = reservaRepository;
+        this.usuarioService = usuarioService;
+        this.productoService = productoService;
         this.modelMapper = modelMapper;
         this.imagenService = imagenService;
+        this.emailService = emailService;
         configureMapping();
     }
 
     @Override
-    public ReservaSalidaDto registrarReserva(ReservaEntradaDto reserva) throws BadRequestException {
-        Usuario usuario = modelMapper.map(reserva.getUsuarioSalidaDto(), Usuario.class);
-        usuarioRepository.findById(usuario.getId())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    public ReservaSalidaDto registrarReserva(ReservaEntradaDto reserva) throws BadRequestException, ResourceNotFoundException {
 
-        Producto producto = modelMapper.map(reserva.getProductoSalidaDto(), Producto.class);
-        productoRepository.findById(producto.getId())
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        // Verificar si el usuario con el ID dado existe en la base de datos
+        UsuarioSalidaDto usuarioSalidaDto = usuarioService.buscarUsuarioPorId(reserva.getUsuarioSalidaDtoId());
+        if (usuarioSalidaDto == null) {
+            LOGGER.error("No se encontró el usuario con ID {}", reserva.getUsuarioSalidaDtoId());
+            throw new ResourceNotFoundException("No se encontró el usuario con ID " + reserva.getUsuarioSalidaDtoId());
+        }
+
+        // Verificar si el producto con el ID dado existe en la base de datos
+        ProductoSalidaDto productoSalidaDto = productoService.buscarProductoPorId(reserva.getProductoSalidaDtoId());
+        if (productoSalidaDto == null) {
+            LOGGER.error("No se encontró el producto con ID {}", reserva.getProductoSalidaDtoId());
+            throw new BadRequestException("No se encontró el producto con ID " + reserva.getProductoSalidaDtoId());
+        }
 
         // Verificar disponibilidad
-        LocalDate disponibilidadDesde = convertToLocalDate(producto.getDisponibilidad_Desde());
-        LocalDate disponibilidadHasta = convertToLocalDate(producto.getDisponibilidad_Hasta());
+        LocalDate disponibilidadDesde = convertToLocalDate(productoSalidaDto.getDisponibilidad_Desde());
+        LocalDate disponibilidadHasta = convertToLocalDate(productoSalidaDto.getDisponibilidad_Hasta());
 
         if (reserva.getFechaInicio().isBefore(disponibilidadDesde) || reserva.getFechaFin().isAfter(disponibilidadHasta)) {
             throw new BadRequestException("Producto no disponible en las fechas seleccionadas");
@@ -71,30 +89,35 @@ public class ReservaService implements IReservaService {
 
         // Verificar solapamiento de reservas existentes
         List<Reserva> reservas = reservaRepository.findByProductoIdAndFechaFinAfterAndFechaInicioBefore(
-                producto.getId(), reserva.getFechaInicio(), reserva.getFechaFin());
+                productoSalidaDto.getId(), reserva.getFechaInicio(), reserva.getFechaFin());
         if (!reservas.isEmpty()) {
             throw new BadRequestException("El producto ya está reservado en las fechas seleccionadas");
         } else {
-            double precioTotal = calcularPrecioTotal(reserva.getFechaInicio(), reserva.getFechaFin(), producto.getPrecioNoche());
+            double precioTotal = calcularPrecioTotal(reserva.getFechaInicio(), reserva.getFechaFin(), productoSalidaDto.getPrecioNoche());
             reserva.setPrecio_total(precioTotal);
             LOGGER.info("ReservaEntradaDto: " + JsonPrinter.toString(reserva));
-            Reserva reservaEntidad = modelMapper.map(reserva, Reserva.class);
 
-            // Mandamos a persistir a la capa dao y obtenemos una entidad
-            Reserva reservaAPersistir = reservaRepository.save(reservaEntidad);
-            List<ImagenSalidaDto> imagenesSalida = new ArrayList<>();
-            /*for(Imagen img : productoAPersistir.getImagenes()){
-                img.setProducto_id(productoAPersistir);
-               ImagenEntradaDto imgagenAPersistir = modelMapper.map(img, ImagenEntradaDto.class);
-                ImagenSalidaDto imagencreada = imagenService.registrarImagen(imgagenAPersistir);
-                imagenesSalida.add(imagencreada);
-             LOGGER.info("Imagen creada: "+imagencreada);
-            }*/
+            // Crear la entidad Reserva y asignar usuario y producto
+            Reserva reservaEntidad = new Reserva();
+            reservaEntidad.setUsuario(modelMapper.map(usuarioSalidaDto, Usuario.class));
+            reservaEntidad.setProducto(modelMapper.map(productoSalidaDto, Producto.class));
+            reservaEntidad.setFechaInicio(reserva.getFechaInicio());
+            reservaEntidad.setFechaFin(reserva.getFechaFin());
+            reservaEntidad.setEstado(reserva.getEstado());
+            reservaEntidad.setPrecio_total(precioTotal);
 
-            // Transformamos la entidad obtenida en salidaDto
-            ReservaSalidaDto reservaSalidaDto = modelMapper.map(reservaAPersistir, ReservaSalidaDto.class);
-            // productoSalidaDto.setImagenes(imagenesSalida);
-            LOGGER.info("ReservaSalidaDto: " + JsonPrinter.toString(reservaSalidaDto));
+            // Guardar el reserva en la base de datos
+            Reserva reservaGuardado = reservaRepository.save(reservaEntidad);
+
+            // Mapear la entidad Reserva a un DTO de salida
+            ReservaSalidaDto reservaSalidaDto = modelMapper.map(reservaGuardado, ReservaSalidaDto.class);
+
+            // Enviar correo electrónico
+            enviarCorreoReserva(reservaSalidaDto);
+
+
+            LOGGER.info("Reserva registrada correctamente: {}", JsonPrinter.toString(reservaSalidaDto));
+
             return reservaSalidaDto;
         }
 
@@ -118,6 +141,8 @@ public class ReservaService implements IReservaService {
         return reservas.stream()
                 .map(reserva -> modelMapper.map(reserva, ReservaSalidaDto.class))
                 .collect(Collectors.toList());
+
+
     }
 
     public double calcularPrecioTotal(LocalDate fechaInicio, LocalDate fechaFin, double precioNoche) {
@@ -127,12 +152,27 @@ public class ReservaService implements IReservaService {
     private LocalDate convertToLocalDate(Date date) {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
+    //funcion para armar la estructura del eamil
+    private void enviarCorreoReserva(ReservaSalidaDto reservaSalidaDto) {
+        String destinatario = reservaSalidaDto.getUsuarioSalidaDto().getEmail();
+        String asunto = "Detalles de su Reserva";
+        String texto = "Estimado " + reservaSalidaDto.getUsuarioSalidaDto().getNombre() + ",\n\n" +
+                "Gracias por su reserva. Aquí están los detalles de su reserva:\n\n" +
+                "Producto: " + reservaSalidaDto.getProductoSalidaDto().getNombre() + "\n" +
+                "Fecha de Inicio: " + reservaSalidaDto.getFechaInicio() + "\n" +
+                "Fecha de Fin: " + reservaSalidaDto.getFechaFin() + "\n" +
+                "Estado: " + reservaSalidaDto.getEstado() + "\n" +
+                "Precio Total: $" + reservaSalidaDto.getPrecio_total() + "\n\n" +
+                "Gracias por confiar en nosotros.\n" +
+                "Saludos cordiales,\n" +
+                "El equipo de reservas";
+
+        emailService.sendSimpleMessage(destinatario, asunto, texto);
+    }
 
     private void configureMapping() {
-        modelMapper.typeMap(ReservaEntradaDto.class, Reserva.class)
-                .addMappings(mapper -> mapper.map(ReservaEntradaDto::getUsuarioSalidaDto, Reserva::setUsuario));
-        modelMapper.typeMap(ReservaEntradaDto.class, Reserva.class)
-                .addMappings(mapper -> mapper.map(ReservaEntradaDto::getProductoSalidaDto, Reserva::setProducto));
+        modelMapper.typeMap(UsuarioSalidaDto.class, Usuario.class);
+        modelMapper.typeMap(ProductoSalidaDto.class, Producto.class);
         modelMapper.typeMap(Reserva.class, ReservaSalidaDto.class)
                 .addMappings(mapper -> mapper.map(Reserva::getUsuario, ReservaSalidaDto::setUsuarioSalidaDto));
         modelMapper.typeMap(Reserva.class, ReservaSalidaDto.class)

@@ -16,6 +16,6 @@ import lombok.Setter;
 public class FavoritoModificacionEntradaDto {
     private Long id;
     private String nombre;
-    private UsuarioSalidaDto usuarioSalidaDto;
-    private ProductoSalidaDto productoSalidaDto;
+    private UsuarioSalidaDto usuario;
+    private ProductoSalidaDto producto;
 }

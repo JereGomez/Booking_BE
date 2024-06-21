@@ -10,7 +10,7 @@ import java.util.List;
 public interface IFavoritoService {
     FavoritoSalidaDto registrarFavorito(FavoritoEntradaDto favorito) throws BadRequestException;
 
-    List<FavoritoSalidaDto> listarFavoritos();
+    List<FavoritoSalidaDto> listarFavoritosByusuario(Long id);
 
     FavoritoSalidaDto buscarFavoritoPorId(Long id);
 

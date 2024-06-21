@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 @Service
 public class FavoritoService implements IFavoritoService{
@@ -48,14 +49,6 @@ public class FavoritoService implements IFavoritoService{
             //mandamos a persistir a la capa dao y obtenemos una entidad
             Favorito favoritoAPersistir = favoritoRepository.save(favoritoEntidad);
             List<ImagenSalidaDto> imagenesSalida = new ArrayList<ImagenSalidaDto>();
-           /*for(Imagen img : productoAPersistir.getImagenes()){
-                img.setProducto_id(productoAPersistir);
-               ImagenEntradaDto imgagenAPersistir = modelMapper.map(img, ImagenEntradaDto.class);
-                ImagenSalidaDto imagencreada = imagenService.registrarImagen(imgagenAPersistir);
-                imagenesSalida.add(imagencreada);
-             LOGGER.info("Imagen creada: "+imagencreada);
-            }*/
-
             //transformamos la entidad obtenida en salidaDto
             FavoritoSalidaDto favoritoSalidaDto = modelMapper.map(favoritoAPersistir, FavoritoSalidaDto.class);
             //productoSalidaDto.setImagenes(imagenesSalida);
@@ -65,15 +58,21 @@ public class FavoritoService implements IFavoritoService{
     }
 
     @Override
-    public List<FavoritoSalidaDto> listarFavoritos() {
+    public List<FavoritoSalidaDto> listarFavoritosByusuario(Long id) {
 
         List<FavoritoSalidaDto> favoritoSalidaDtos = favoritoRepository.findAll()
                 .stream()
                 .map(favorito -> modelMapper.map(favorito, FavoritoSalidaDto.class))
                 .toList();
+        for(FavoritoSalidaDto fav : favoritoSalidaDtos){
+            if(!(fav.getUsuario().getId() == id)){
+                favoritoSalidaDtos.remove(fav);
+            }
+        }
         LOGGER.info("Listado de favoritos: {}", JsonPrinter.toString(favoritoSalidaDtos));
         return favoritoSalidaDtos;
     }
+
 
     @Override
     public FavoritoSalidaDto buscarFavoritoPorId(Long id) {
@@ -116,9 +115,9 @@ public class FavoritoService implements IFavoritoService{
         modelMapper.typeMap(FavoritoEntradaDto.class, Favorito.class)
                 .addMappings(modelMapper -> modelMapper.map(FavoritoEntradaDto::getProductoSalidaDto, Favorito::setProducto));
         modelMapper.typeMap(Favorito.class, FavoritoSalidaDto.class)
-                .addMappings(modelMapper -> modelMapper.map(Favorito::getUsuario, FavoritoSalidaDto::setUsuarioSalidaDto));
+                .addMappings(modelMapper -> modelMapper.map(Favorito::getUsuario, FavoritoSalidaDto::setUsuario));
         modelMapper.typeMap(Favorito.class, FavoritoSalidaDto.class)
-                .addMappings(modelMapper -> modelMapper.map(Favorito::getProducto, FavoritoSalidaDto::setProductoSalidaDto));
+                .addMappings(modelMapper -> modelMapper.map(Favorito::getProducto, FavoritoSalidaDto::setProducto));
 
         modelMapper.typeMap(Imagen.class, ImagenEntradaDto.class);
     }

@@ -42,9 +42,9 @@ public class FavoritoController {
     })
 
 
-    @GetMapping("/listar")
-    public ResponseEntity<List<FavoritoSalidaDto>> listarFavoritos() {
-        List<FavoritoSalidaDto> favoritos = favoritoService.listarFavoritos();
+    @GetMapping("/listar/{id}")
+    public ResponseEntity<List<FavoritoSalidaDto>> listarFavoritos(@PathVariable Long id) {
+        List<FavoritoSalidaDto> favoritos = favoritoService.listarFavoritosByusuario(id);
         return new ResponseEntity<>(favoritos, HttpStatus.OK);
     }
 

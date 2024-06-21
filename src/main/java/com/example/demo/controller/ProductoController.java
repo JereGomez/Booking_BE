@@ -43,7 +43,7 @@ public class ProductoController {
                     content = @Content)
     })
     @GetMapping("/")
-    public ResponseEntity<List<ProductoSalidaDto>> listarProductos() {
+    public ResponseEntity<List<ProductoSalidaDto>> listarProductos() throws ResourceNotFoundException{
         return new ResponseEntity<>(productoService.listarProductos(), HttpStatus.OK);
     }
     //buscar producto con PathVariable
@@ -60,7 +60,7 @@ public class ProductoController {
                     content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoSalidaDto> obtenerProductoPorId(@PathVariable Long id) {
+    public ResponseEntity<ProductoSalidaDto> obtenerProductoPorId(@PathVariable Long id) throws ResourceNotFoundException{
         return new ResponseEntity<>(productoService.buscarProductoPorId(id), HttpStatus.OK);
     }
 
@@ -110,8 +110,10 @@ public class ProductoController {
             @ApiResponse(responseCode = "500", description = "UServer error",
                     content = @Content)
     })
+
     @PutMapping("/admin/{id}")
-    public ResponseEntity<ProductoSalidaDto> actualizarProducto(@PathVariable Long id, @RequestBody ProductoModificacionEntradaDto producto) {
+    public ResponseEntity<ProductoSalidaDto> actualizarProducto(@PathVariable Long id, @RequestBody ProductoModificacionEntradaDto producto) throws ResourceNotFoundException{
+
         return new ResponseEntity<>(productoService.actualizarProducto(id, producto), HttpStatus.OK);
     }
 

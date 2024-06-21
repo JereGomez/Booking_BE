@@ -55,7 +55,9 @@ public class UsuarioController {
                     content = @Content)
     })
     @PostMapping("/registrar")
+
     public ResponseEntity<UsuarioSalidaDto> guardar(@RequestBody @Valid UsuarioEntradaDto usuario) throws MessagingException {
+
         usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
         return new ResponseEntity<>(usuarioService.registrarUsuario(usuario), HttpStatus.CREATED);
     }
@@ -92,9 +94,11 @@ public class UsuarioController {
             @ApiResponse(responseCode = "500", description = "UServer error",
                     content = @Content)
     })
+
     @PutMapping("/admin/{id}")
     public ResponseEntity<UsuarioSalidaDto> actualizarUsuario(@RequestBody UsuarioModificacionEntradaDto usuario, @PathVariable Long id){
         return new ResponseEntity<>(usuarioService.actualizarUsuario(usuario, id),HttpStatus.OK);
+
     }
     @Operation(summary = "Listado de todos los usuarios")
     @ApiResponses(value = {
@@ -108,8 +112,10 @@ public class UsuarioController {
     })
 
 
+
     @GetMapping("/admin/listar")
     public ResponseEntity<List<UsuarioSalidaDto>> listarUsuarios(){
+
         return new ResponseEntity<>(usuarioService.listarUsuarios(), HttpStatus.OK);
     }
 

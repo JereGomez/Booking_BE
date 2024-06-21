@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 @Service
 public class FavoritoService implements IFavoritoService{
@@ -45,16 +44,31 @@ public class FavoritoService implements IFavoritoService{
             BadRequestException exception = new BadRequestException("Ya existe un favorito con ese nombre ${favorito.getNombre()}");
             throw exception;
         }
-        else{
-            //mandamos a persistir a la capa dao y obtenemos una entidad
-            Favorito favoritoAPersistir = favoritoRepository.save(favoritoEntidad);
-            List<ImagenSalidaDto> imagenesSalida = new ArrayList<ImagenSalidaDto>();
-            //transformamos la entidad obtenida en salidaDto
-            FavoritoSalidaDto favoritoSalidaDto = modelMapper.map(favoritoAPersistir, FavoritoSalidaDto.class);
-            //productoSalidaDto.setImagenes(imagenesSalida);
-            LOGGER.info("FavoritoSalidaDto: " + JsonPrinter.toString(favoritoSalidaDto));
-            return favoritoSalidaDto;
+
+        // Verificar si el producto con el ID dado existe en la base de datos
+        ProductoSalidaDto productoSalidaDto = productoService.buscarProductoPorId(favoritoDto.getProductoSalidaDtoId());
+        if (productoSalidaDto == null) {
+            LOGGER.error("No se encontró el producto con ID {}", favoritoDto.getProductoSalidaDtoId());
+            throw new BadRequestException("No se encontró el producto con ID " + favoritoDto.getProductoSalidaDtoId());
         }
+
+
+        // Crear la entidad Favorito y asignar usuario y producto
+        Favorito favoritoEntidad = new Favorito();
+        favoritoEntidad.setUsuario(modelMapper.map(usuarioSalidaDto, Usuario.class));
+        favoritoEntidad.setProducto(modelMapper.map(productoSalidaDto, Producto.class));
+
+
+        // Guardar el favorito en la base de datos
+        Favorito favoritoGuardado = favoritoRepository.save(favoritoEntidad);
+
+        // Mapear la entidad Favorito a un DTO de salida
+        FavoritoSalidaDto favoritoSalidaDto = modelMapper.map(favoritoGuardado, FavoritoSalidaDto.class);
+
+
+        LOGGER.info("Favorito registrado correctamente: {}", JsonPrinter.toString(favoritoSalidaDto));
+
+        return favoritoSalidaDto;
     }
 
     @Override
@@ -72,7 +86,6 @@ public class FavoritoService implements IFavoritoService{
         LOGGER.info("Listado de favoritos: {}", JsonPrinter.toString(favoritoSalidaDtos));
         return favoritoSalidaDtos;
     }
-
 
     @Override
     public FavoritoSalidaDto buscarFavoritoPorId(Long id) {
@@ -115,9 +128,9 @@ public class FavoritoService implements IFavoritoService{
         modelMapper.typeMap(FavoritoEntradaDto.class, Favorito.class)
                 .addMappings(modelMapper -> modelMapper.map(FavoritoEntradaDto::getProductoSalidaDto, Favorito::setProducto));
         modelMapper.typeMap(Favorito.class, FavoritoSalidaDto.class)
-                .addMappings(modelMapper -> modelMapper.map(Favorito::getUsuario, FavoritoSalidaDto::setUsuario));
+                .addMappings(modelMapper -> modelMapper.map(Favorito::getUsuario, FavoritoSalidaDto::setUsuarioSalidaDto));
         modelMapper.typeMap(Favorito.class, FavoritoSalidaDto.class)
-                .addMappings(modelMapper -> modelMapper.map(Favorito::getProducto, FavoritoSalidaDto::setProducto));
+                .addMappings(modelMapper -> modelMapper.map(Favorito::getProducto, FavoritoSalidaDto::setProductoSalidaDto));
 
         modelMapper.typeMap(Imagen.class, ImagenEntradaDto.class);
     }

@@ -74,17 +74,20 @@ public class ProductoService implements IProductoService{
 
 
     @Override
-    public List<ProductoSalidaDto> listarProductos() {
+    public List<ProductoSalidaDto> listarProductos() throws ResourceNotFoundException{
         List<ProductoSalidaDto> productoSalidaDtos = productoRepository.findAll()
                 .stream()
                 .map(producto -> modelMapper.map(producto, ProductoSalidaDto.class))
                 .toList();
         LOGGER.info("Listado de todos los productos: {}", JsonPrinter.toString(productoSalidaDtos));
+        if (productoSalidaDtos.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron productos.");
+        }
         return productoSalidaDtos;
     }
 
     @Override
-    public ProductoSalidaDto buscarProductoPorId(Long id) {
+    public ProductoSalidaDto buscarProductoPorId(Long id)throws ResourceNotFoundException {
         Producto productoBuscado = productoRepository.findById(id).orElse(null);
         ProductoSalidaDto productoEncontrado = null;
 
@@ -92,7 +95,10 @@ public class ProductoService implements IProductoService{
         if (productoBuscado != null) {
             productoEncontrado = modelMapper.map(productoBuscado, ProductoSalidaDto.class);
             LOGGER.info("Producto encontrado: {}", JsonPrinter.toString(productoEncontrado));
-        } else LOGGER.error("El id no se encuentra registrado en la base de datos");
+        } else {
+            LOGGER.error("El id no se encuentra registrado en la base de datos");
+            throw new ResourceNotFoundException("No se ha encontrado el producto con id " + id);
+        }
 
         return productoEncontrado;
     }
@@ -109,7 +115,7 @@ public class ProductoService implements IProductoService{
     }
 
     @Override
-    public ProductoSalidaDto actualizarProducto( Long id, ProductoModificacionEntradaDto producto) {
+    public ProductoSalidaDto actualizarProducto( Long id, ProductoModificacionEntradaDto producto)throws ResourceNotFoundException  {
         LOGGER.info(id.toString());
         Producto productoRecibido = modelMapper.map(producto, Producto.class);
         Producto productoAActualizar = productoRepository.findById(id).orElse(null);

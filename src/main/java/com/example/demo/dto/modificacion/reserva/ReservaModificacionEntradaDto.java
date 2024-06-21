@@ -1,67 +1,81 @@
 package com.example.demo.dto.modificacion.reserva;
 
 
+import com.example.demo.dto.salida.producto.ProductoSalidaDto;
+import com.example.demo.dto.salida.usuario.UsuarioSalidaDto;
 import com.example.demo.entity.Producto;
 import com.example.demo.entity.Usuario;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
 public class ReservaModificacionEntradaDto {
-    private Producto alojamiento;
-    private Usuario usuario;
+    @NotNull(message = "Debe proveerse el id de la reserva que se desea modificar")
+    private Long id;
+    private ProductoSalidaDto productoSalidaDto;
+    private UsuarioSalidaDto usuarioSalidaDto;
     @FutureOrPresent(message = "La fecha no puede ser anterior al día de hoy")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDate fecha_inicio;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate fechaInicio;
     @FutureOrPresent(message = "La fecha no puede ser anterior al día de hoy")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDate fecha_fin;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate fechaFin;
     private String estado;
-    private double precio;
+    private double precio_total;
 
     public ReservaModificacionEntradaDto() {
     }
 
-    public ReservaModificacionEntradaDto(Producto alojamiento, Usuario usuario, LocalDate fecha_inicio, LocalDate fecha_fin, String estado, double precio) {
-        this.alojamiento = alojamiento;
-        this.usuario = usuario;
-        this.fecha_inicio = fecha_inicio;
-        this.fecha_fin = fecha_fin;
+    public ReservaModificacionEntradaDto(Long id, ProductoSalidaDto productoSalidaDto, UsuarioSalidaDto usuarioSalidaDto, LocalDate fechaInicio, LocalDate fechaFin, String estado, double precio_total) {
+        this.id = id;
+        this.productoSalidaDto = productoSalidaDto;
+        this.usuarioSalidaDto = usuarioSalidaDto;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
         this.estado = estado;
-        this.precio = precio;
+        this.precio_total = precio_total;
     }
 
-    public Producto getAlojamiento() {
-        return alojamiento;
+    public Long getId() {
+        return id;
     }
 
-    public void setAlojamiento(Producto alojamiento) {
-        this.alojamiento = alojamiento;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public ProductoSalidaDto getProductoSalidaDto() {
+        return productoSalidaDto;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setProductoSalidaDto(ProductoSalidaDto productoSalidaDto) {
+        this.productoSalidaDto = productoSalidaDto;
     }
 
-    public LocalDate getFecha_inicio() {
-        return fecha_inicio;
+    public UsuarioSalidaDto getUsuarioSalidaDto() {
+        return usuarioSalidaDto;
     }
 
-    public void setFecha_inicio(LocalDate fecha_inicio) {
-        this.fecha_inicio = fecha_inicio;
+    public void setUsuarioSalidaDto(UsuarioSalidaDto usuarioSalidaDto) {
+        this.usuarioSalidaDto = usuarioSalidaDto;
     }
 
-    public LocalDate getFecha_fin() {
-        return fecha_fin;
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
     }
 
-    public void setFecha_fin(LocalDate fecha_fin) {
-        this.fecha_fin = fecha_fin;
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public LocalDate getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(LocalDate fechaFin) {
+        this.fechaFin = fechaFin;
     }
 
     public String getEstado() {
@@ -72,23 +86,24 @@ public class ReservaModificacionEntradaDto {
         this.estado = estado;
     }
 
-    public double getPrecio() {
-        return precio;
+    public double getPrecio_total() {
+        return precio_total;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    public void setPrecio_total(double precio_total) {
+        this.precio_total = precio_total;
     }
 
     @Override
     public String toString() {
         return "ReservaModificacionEntradaDto{" +
-                "alojamiento=" + alojamiento +
-                ", usuario=" + usuario +
-                ", fecha_inicio=" + fecha_inicio +
-                ", fecha_fin=" + fecha_fin +
+                "id=" + id +
+                ", productoSalidaDto=" + productoSalidaDto +
+                ", usuarioSalidaDto=" + usuarioSalidaDto +
+                ", fechaInicio=" + fechaInicio +
+                ", fechaFin=" + fechaFin +
                 ", estado='" + estado + '\'' +
-                ", precio=" + precio +
+                ", precio_total=" + precio_total +
                 '}';
     }
 }

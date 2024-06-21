@@ -28,8 +28,8 @@ public class Producto {
     @JoinColumn(name = "ubicacion_id")
     private Ubicacion ubicacion;
 
-   @OneToMany(cascade=CascadeType.ALL )
-   @JoinColumn(name="producto_id",referencedColumnName="id")
+    @OneToMany(cascade=CascadeType.ALL )
+    @JoinColumn(name="producto_id",referencedColumnName="id")
     private List<Imagen> imagenes;
 
     @ManyToMany()

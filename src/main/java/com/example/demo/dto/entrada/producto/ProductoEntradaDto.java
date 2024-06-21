@@ -53,8 +53,8 @@ public class ProductoEntradaDto {
         this.descripcion = descripcion;
         this.precioNoche = precioNoche;
         this.capacidad = capacidad;
-        disponibilidad_Desde = disponibilidadDesde;
-        disponibilidad_Hasta = disponibilidadHasta;
+        this.disponibilidad_Desde = disponibilidadDesde;
+        this.disponibilidad_Hasta = disponibilidadHasta;
         this.ubicacion = ubicacion;
         this.imagenes = imagenes;
         this.categorias = categorias;

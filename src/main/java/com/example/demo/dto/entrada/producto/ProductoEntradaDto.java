@@ -1,8 +1,6 @@
 package com.example.demo.dto.entrada.producto;
 
 
-import com.example.demo.dto.entrada.caracteristica.CaracteristicaEntradaDto;
-import com.example.demo.dto.entrada.categoria.CategoriaEntradaDto;
 import com.example.demo.dto.entrada.imagen.ImagenEntradaDto;
 import com.example.demo.dto.entrada.ubicacion.UbicacionEntradaDto;
 import com.example.demo.entity.Caracteristica;

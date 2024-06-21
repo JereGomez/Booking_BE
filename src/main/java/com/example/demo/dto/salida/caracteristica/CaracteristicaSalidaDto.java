@@ -5,15 +5,15 @@ public class CaracteristicaSalidaDto {
 
     private String nombre;
 
-    private Integer tipo;
+    private String icono;
 
     public CaracteristicaSalidaDto() {
     }
 
-    public CaracteristicaSalidaDto(Long id, String nombre, Integer tipo) {
+    public CaracteristicaSalidaDto(Long id, String nombre, String icono) {
         this.id = id;
         this.nombre = nombre;
-        this.tipo = tipo;
+        this.icono = icono;
     }
 
     public Long getId() {
@@ -32,12 +32,12 @@ public class CaracteristicaSalidaDto {
         this.nombre = nombre;
     }
 
-    public Integer getTipo() {
-        return tipo;
+    public String getIcono() {
+        return icono;
     }
 
-    public void setTipo(Integer tipo) {
-        this.tipo = tipo;
+    public void setTIcono(String icono) {
+        this.icono = icono;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CaracteristicaSalidaDto {
         return "CaracteristicaSalidaDto{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
-                ", tipo=" + tipo +
+                ", icono=" + icono+
                 '}';
     }
 }

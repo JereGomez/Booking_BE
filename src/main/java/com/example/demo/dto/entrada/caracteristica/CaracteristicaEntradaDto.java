@@ -2,14 +2,14 @@ package com.example.demo.dto.entrada.caracteristica;
 
 public class CaracteristicaEntradaDto {
     private String nombre;
-    private String tipo;
+    private String icono;
 
     public CaracteristicaEntradaDto() {
     }
 
-    public CaracteristicaEntradaDto(String nombre, String tipo) {
+    public CaracteristicaEntradaDto(String nombre, String icono) {
         this.nombre = nombre;
-        this.tipo = tipo;
+        this.icono = icono;
     }
 
     public String getNombre() {
@@ -20,19 +20,19 @@ public class CaracteristicaEntradaDto {
         this.nombre = nombre;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getIcono() {
+        return icono;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setIcono(String tipo) {
+        this.icono = tipo;
     }
 
     @Override
     public String toString() {
         return "CaracteristicaEntradaDto{" +
                 "nombre='" + nombre + '\'' +
-                ", tipo='" + tipo + '\'' +
+                ", icono='" + icono + '\'' +
                 '}';
     }
 }

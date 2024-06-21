@@ -8,19 +8,17 @@ public class UbicacionSalidaDto {
     private String ciudad;
     private int codigoPostal;
     private String direccionExacta;
-    private BigDecimal coordenadaGps;
 
     public UbicacionSalidaDto() {
     }
 
 
-    public UbicacionSalidaDto(String pais, String ciudad, int codigoPostal, String direccionExacta, BigDecimal coordenadaGps, Long id) {
+    public UbicacionSalidaDto(String pais, String ciudad, int codigoPostal, String direccionExacta, Long id) {
         this.id = id;
         this.pais = pais;
         this.ciudad = ciudad;
         this.codigoPostal = codigoPostal;
         this.direccionExacta = direccionExacta;
-        this.coordenadaGps = coordenadaGps;
     }
 
     public Long getId() {
@@ -63,13 +61,7 @@ public class UbicacionSalidaDto {
         this.direccionExacta = direccionExacta;
     }
 
-    public BigDecimal getCoordenadaGps() {
-        return coordenadaGps;
-    }
 
-    public void setCoordenadaGps(BigDecimal coordenadaGps) {
-        this.coordenadaGps = coordenadaGps;
-    }
 
     @Override
     public String toString() {
@@ -78,7 +70,6 @@ public class UbicacionSalidaDto {
                 ", ciudad='" + ciudad + '\'' +
                 ", codigoPostal=" + codigoPostal +
                 ", direccionExacta='" + direccionExacta + '\'' +
-                ", coordenadaGps=" + coordenadaGps +
                 '}';
     }
 }

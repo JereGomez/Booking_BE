@@ -42,9 +42,9 @@ public class FavoritoController {
     })
 
 
-    @GetMapping("/listar")
-    public ResponseEntity<List<FavoritoSalidaDto>> listarFavoritos() {
-        List<FavoritoSalidaDto> favoritos = favoritoService.listarFavoritos();
+    @GetMapping("/listar/{id}")
+    public ResponseEntity<List<FavoritoSalidaDto>> listarFavoritos(@PathVariable Long id) {
+        List<FavoritoSalidaDto> favoritos = favoritoService.listarFavoritosByusuario(id);
         return new ResponseEntity<>(favoritos, HttpStatus.OK);
     }
 
@@ -59,7 +59,7 @@ public class FavoritoController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    public ResponseEntity<FavoritoSalidaDto> guardar(@RequestBody @Valid FavoritoEntradaDto favorito) throws BadRequestException {
+    public ResponseEntity<FavoritoSalidaDto> guardar(@RequestBody @Valid FavoritoEntradaDto favorito) throws BadRequestException, ResourceNotFoundException {
         return new ResponseEntity<>(favoritoService.registrarFavorito(favorito), HttpStatus.CREATED);
     }
 

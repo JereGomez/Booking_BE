@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.entrada.reserva.ReservaEntradaDto;
 import com.example.demo.dto.salida.reserva.ReservaSalidaDto;
 import com.example.demo.exceptions.BadRequestException;
+import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.service.IReservaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,7 +41,7 @@ public class ReservaController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    public ResponseEntity<ReservaSalidaDto> guardar(@RequestBody @Valid ReservaEntradaDto reserva) throws BadRequestException {
+    public ResponseEntity<ReservaSalidaDto> guardar(@RequestBody @Valid ReservaEntradaDto reserva) throws BadRequestException, ResourceNotFoundException {
         return new ResponseEntity<>(reservaService.registrarReserva(reserva), HttpStatus.CREATED);
     }
     @Operation(summary = "Listado de todas las Reservas")
@@ -58,5 +60,11 @@ public class ReservaController {
     public ResponseEntity<List<ReservaSalidaDto>> listarFavoritos()  {
         List<ReservaSalidaDto> reservas = reservaService.listarReservas();
         return new ResponseEntity<>(reservas, HttpStatus.OK);
+    }
+    @GetMapping("/mis-reservas")
+    public ResponseEntity<List<ReservaSalidaDto>> obtenerMisReservas(Authentication authentication) {
+        String emailUsuario = authentication.getName();
+        List<ReservaSalidaDto> reservas = reservaService.obtenerReservasPorUsuario(emailUsuario);
+        return ResponseEntity.ok(reservas);
     }
 }

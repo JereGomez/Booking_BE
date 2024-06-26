@@ -66,17 +66,17 @@ public class ReservaService implements IReservaService {
     public ReservaSalidaDto registrarReserva(ReservaEntradaDto reserva) throws BadRequestException, ResourceNotFoundException {
 
         // Verificar si el usuario con el ID dado existe en la base de datos
-        UsuarioSalidaDto usuarioSalidaDto = usuarioService.buscarUsuarioPorId(reserva.getUsuarioSalidaDtoId());
-        if (usuarioSalidaDto == null) {
-            LOGGER.error("No se encontró el usuario con ID {}", reserva.getUsuarioSalidaDtoId());
-            throw new ResourceNotFoundException("No se encontró el usuario con ID " + reserva.getUsuarioSalidaDtoId());
+        UsuarioSalidaDto usuarioSalidaDto = usuarioService.buscarUsuarioPorId(reserva.getUsuarioId());
+        if (usuarioSalidaDto == null || !usuarioService.checkUsuarioEnSesionById(reserva.getUsuarioId())) {
+            LOGGER.error("No se encontró el usuario con ID o el ID no pertence al usuario en uso. ID: {}", reserva.getUsuarioId());
+            throw new ResourceNotFoundException("No se encontró el usuario con ID o el ID no pertence al usuario en uso. ID: " + reserva.getUsuarioId());
         }
 
         // Verificar si el producto con el ID dado existe en la base de datos
-        ProductoSalidaDto productoSalidaDto = productoService.buscarProductoPorId(reserva.getProductoSalidaDtoId());
+        ProductoSalidaDto productoSalidaDto = productoService.buscarProductoPorId(reserva.getProductoId());
         if (productoSalidaDto == null) {
-            LOGGER.error("No se encontró el producto con ID {}", reserva.getProductoSalidaDtoId());
-            throw new BadRequestException("No se encontró el producto con ID " + reserva.getProductoSalidaDtoId());
+            LOGGER.error("No se encontró el producto con ID {}", reserva.getProductoId());
+            throw new BadRequestException("No se encontró el producto con ID " + reserva.getProductoId());
         }
 
         // Verificar disponibilidad
@@ -136,13 +136,12 @@ public class ReservaService implements IReservaService {
         return reservaSalidaDtos;
     }
     @Override
-    public List<ReservaSalidaDto> obtenerReservasPorUsuario(String emailUsuario) {
-        List<Reserva> reservas = reservaRepository.findByUsuarioEmail(emailUsuario);
+    public List<ReservaSalidaDto> obtenerReservasPorUsuario() {
+    String usernameInSession = usuarioService.usuarioEnSession().getEmail();
+        List<Reserva> reservas = reservaRepository.findByUsuarioEmail(usernameInSession);
         return reservas.stream()
                 .map(reserva -> modelMapper.map(reserva, ReservaSalidaDto.class))
                 .collect(Collectors.toList());
-
-
     }
 
     public double calcularPrecioTotal(LocalDate fechaInicio, LocalDate fechaFin, double precioNoche) {

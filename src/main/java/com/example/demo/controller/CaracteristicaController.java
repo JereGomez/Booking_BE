@@ -40,22 +40,22 @@ public class CaracteristicaController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @PostMapping("/admin/")
+    @PostMapping("/")
     public ResponseEntity<CaracteristicaSalidaDto> guardarCaracteristica(@RequestBody @Valid CaracteristicaEntradaDto caracteristica) {
         return new ResponseEntity<>(caracteristicaService.registrarCaracteristica(caracteristica), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/{id}")
     public  ResponseEntity<Void> eliminarCaracteristica(@PathVariable Long  id) {
         caracteristicaService.eliminarCaracteristicaByID(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @GetMapping("/")
+    @GetMapping("/listar")
     ResponseEntity<List<CaracteristicaSalidaDto>> listarcaraCteristicas() {
         return new ResponseEntity<>(caracteristicaService.listarCaracteristicas(), HttpStatus.OK);
     }
 
-    @PutMapping("/admin/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> actualizarCaracteristica(@PathVariable Long id, @RequestBody @Valid CaracteristicaModificacionEntradaDto caracteristica) throws ResourceNotFoundException {
         caracteristicaService.actualizarCaracteristicaByID(id,caracteristica);
         return new ResponseEntity<>(HttpStatus.OK);

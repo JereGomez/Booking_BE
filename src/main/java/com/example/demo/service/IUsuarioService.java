@@ -10,13 +10,12 @@ import com.example.demo.entity.Usuario;
 import com.example.demo.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpSession;
 
-import javax.mail.MessagingException;
 import java.util.List;
 import java.util.Optional;
 
 public interface IUsuarioService {
 
-    UsuarioSalidaDto registrarUsuario(UsuarioEntradaDto usuario) throws MessagingException;
+    UsuarioSalidaDto registrarUsuario(UsuarioEntradaDto usuario);
     List<UsuarioSalidaDto> listarUsuarios();
 
     UsuarioSalidaDto buscarUsuarioPorId(Long id)throws ResourceNotFoundException;
@@ -30,4 +29,5 @@ public interface IUsuarioService {
 
     UsuarioSalidaDto logout(HttpSession session);
 
+    UsuarioSalidaDto usuarioEnSession();
 }

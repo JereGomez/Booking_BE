@@ -10,5 +10,5 @@ import java.util.List;
 public interface IReservaService {
     ReservaSalidaDto registrarReserva(ReservaEntradaDto reserva) throws BadRequestException, ResourceNotFoundException;
     List<ReservaSalidaDto> listarReservas();
-    List<ReservaSalidaDto> obtenerReservasPorUsuario(String emailUsuario);
+    List<ReservaSalidaDto> obtenerReservasPorUsuario();
 }

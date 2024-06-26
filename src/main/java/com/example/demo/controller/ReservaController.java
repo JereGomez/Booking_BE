@@ -57,14 +57,13 @@ public class ReservaController {
 
 
     @GetMapping("/listar")
-    public ResponseEntity<List<ReservaSalidaDto>> listarFavoritos()  {
+    public ResponseEntity<List<ReservaSalidaDto>> listarReservas()  {
         List<ReservaSalidaDto> reservas = reservaService.listarReservas();
         return new ResponseEntity<>(reservas, HttpStatus.OK);
     }
     @GetMapping("/mis-reservas")
-    public ResponseEntity<List<ReservaSalidaDto>> obtenerMisReservas(Authentication authentication) {
-        String emailUsuario = authentication.getName();
-        List<ReservaSalidaDto> reservas = reservaService.obtenerReservasPorUsuario(emailUsuario);
+    public ResponseEntity<List<ReservaSalidaDto>> obtenerMisReservas() {
+        List<ReservaSalidaDto> reservas = reservaService.obtenerReservasPorUsuario();
         return ResponseEntity.ok(reservas);
     }
 }

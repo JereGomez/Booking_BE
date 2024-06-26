@@ -35,12 +35,12 @@ public class Categoria {
         this.productos = productos;
     }
 
-    public Categoria(Long id, String nombre, String descripcion) {
-        this.id = id;
-        //this.alojamiento = alojamiento;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-    }
+//    public Categoria(Long id, String nombre, String descripcion) {
+//        this.id = id;
+//        //this.alojamiento = alojamiento;
+//        this.nombre = nombre;
+//        this.descripcion = descripcion;
+//    }
 
     public Long getId() {
         return id;

@@ -12,8 +12,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class ReservaEntradaDto {
-    private Long usuarioSalidaDtoId;
-    private Long productoSalidaDtoId;
+    private Long usuarioId;
+    private Long productoId;
     @FutureOrPresent(message = "La fecha no puede ser anterior al día de hoy")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate fechaInicio;
@@ -26,9 +26,9 @@ public class ReservaEntradaDto {
     public ReservaEntradaDto() {
     }
 
-    public ReservaEntradaDto(Long usuarioSalidaDtoId, Long productoSalidaDtoId, LocalDate fechaInicio, LocalDate fechaFin, String estado, double precio_total) {
-        this.usuarioSalidaDtoId = usuarioSalidaDtoId;
-        this.productoSalidaDtoId = productoSalidaDtoId;
+    public ReservaEntradaDto(Long usuarioId, Long productoId, LocalDate fechaInicio, LocalDate fechaFin, String estado, double precio_total) {
+        this.usuarioId = usuarioId;
+        this.productoId = productoId;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.estado = estado;

@@ -42,9 +42,9 @@ public class FavoritoController {
     })
 
 
-    @GetMapping("/listar/{id}")
-    public ResponseEntity<List<FavoritoSalidaDto>> listarFavoritos(@PathVariable Long id) {
-        List<FavoritoSalidaDto> favoritos = favoritoService.listarFavoritosByusuario(id);
+    @GetMapping("/mis-favortios")
+    public ResponseEntity<List<FavoritoSalidaDto>> listarFavoritos() {
+        List<FavoritoSalidaDto> favoritos = favoritoService.listarFavoritosByusuario();
         return new ResponseEntity<>(favoritos, HttpStatus.OK);
     }
 
@@ -77,7 +77,7 @@ public class FavoritoController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<FavoritoSalidaDto> obtenerProductoPorId(@PathVariable Long id) {
         return new ResponseEntity<>(favoritoService.buscarFavoritoPorId(id), HttpStatus.OK);
     }
@@ -94,7 +94,7 @@ public class FavoritoController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarFavorito(@PathVariable Long id) throws ResourceNotFoundException {
         favoritoService.eliminarFavorito(id);
         return new ResponseEntity<>(HttpStatus.OK);

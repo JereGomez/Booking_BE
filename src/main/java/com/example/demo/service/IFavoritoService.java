@@ -10,7 +10,7 @@ import java.util.List;
 public interface IFavoritoService {
     FavoritoSalidaDto registrarFavorito(FavoritoEntradaDto favorito) throws BadRequestException, ResourceNotFoundException;
 
-    List<FavoritoSalidaDto> listarFavoritosByusuario(Long id);
+    List<FavoritoSalidaDto> listarFavoritosByusuario();
 
     FavoritoSalidaDto buscarFavoritoPorId(Long id);
 

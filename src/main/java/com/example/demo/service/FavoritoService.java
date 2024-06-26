@@ -84,14 +84,14 @@ public class FavoritoService implements IFavoritoService{
 
 
     @Override
-    public List<FavoritoSalidaDto> listarFavoritosByusuario(Long id) {
-
+    public List<FavoritoSalidaDto> listarFavoritosByusuario() {
+        String usuarioSession = usuarioService.usuarioEnSession().getEmail();
         List<FavoritoSalidaDto> favoritoSalidaDtos = favoritoRepository.findAll()
                 .stream()
                 .map(favorito -> modelMapper.map(favorito, FavoritoSalidaDto.class))
                 .toList();
         for(FavoritoSalidaDto fav : favoritoSalidaDtos){
-            if(!(fav.getUsuario().getId() == id)){
+            if(!(fav.getUsuario().getEmail() == usuarioSession)){
                 favoritoSalidaDtos.remove(fav);
             }
         }

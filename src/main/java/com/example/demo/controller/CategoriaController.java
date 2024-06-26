@@ -39,22 +39,22 @@ public class CategoriaController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @PostMapping("/admin/")
+    @PostMapping("/")
     public ResponseEntity<CategoriaSalidaDto> guardarCategoria(@RequestBody @Valid CategoriaEntradaDto categoria) {
         return new ResponseEntity<>(categoriaService.registrarCategoria(categoria), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/admin/{id}")
-    public  ResponseEntity<Void> eliminarCategoria(@PathVariable Long  id) {
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<Void> eliminarCategoria(@PathVariable Long  id) throws ResourceNotFoundException {
         categoriaService.eliminarCategoriaByID(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @GetMapping("/")
+    @GetMapping("/listar")
     ResponseEntity<List<CategoriaSalidaDto>> listarCategorias() {
         return new ResponseEntity<>(categoriaService.listarCategorias(), HttpStatus.OK);
     }
 
-    @PutMapping("/admin/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> actualizarCategoria(@PathVariable Long id, @RequestBody @Valid CategoriaModificacionEntradaDto categoria) throws ResourceNotFoundException {
         categoriaService.actualizarCategoriaByID(id, categoria);
         return new ResponseEntity<>(HttpStatus.OK);

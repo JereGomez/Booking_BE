@@ -42,7 +42,7 @@ public class ProductoController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @GetMapping("/")
+    @GetMapping("/listar")
     public ResponseEntity<List<ProductoSalidaDto>> listarProductos() throws ResourceNotFoundException{
         return new ResponseEntity<>(productoService.listarProductos(), HttpStatus.OK);
     }
@@ -91,7 +91,7 @@ public class ProductoController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @PostMapping("/admin/")
+    @PostMapping("/")
     public ResponseEntity<ProductoSalidaDto> guardar(@RequestBody @Valid ProductoEntradaDto producto) throws BadRequestException {
         return new ResponseEntity<>(productoService.registrarProducto(producto), HttpStatus.CREATED);
     }
@@ -111,7 +111,7 @@ public class ProductoController {
                     content = @Content)
     })
 
-    @PutMapping("/admin/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ProductoSalidaDto> actualizarProducto(@PathVariable Long id, @RequestBody ProductoModificacionEntradaDto producto) throws ResourceNotFoundException{
 
         return new ResponseEntity<>(productoService.actualizarProducto(id, producto), HttpStatus.OK);
@@ -129,7 +129,7 @@ public class ProductoController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarProducto(@PathVariable Long id) throws ResourceNotFoundException {
         productoService.eliminarProducto(id);
         return new ResponseEntity<>(HttpStatus.OK);

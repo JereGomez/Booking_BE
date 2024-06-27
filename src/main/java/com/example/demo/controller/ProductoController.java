@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.entrada.disponibilidad.DisponibilidadEntradaDto;
 import com.example.demo.dto.entrada.producto.ProductoEntradaDto;
 import com.example.demo.dto.modificacion.producto.ProductoModificacionEntradaDto;
 import com.example.demo.dto.salida.categoria.CategoriaSalidaDto;
 import com.example.demo.dto.salida.producto.ProductoSalidaDto;
+import com.example.demo.dto.salida.reserva.ReservaSalidaDto;
 import com.example.demo.entity.Categoria;
 import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.ResourceNotFoundException;
@@ -94,6 +96,12 @@ public class ProductoController {
     @PostMapping("/")
     public ResponseEntity<ProductoSalidaDto> guardar(@RequestBody @Valid ProductoEntradaDto producto) throws BadRequestException {
         return new ResponseEntity<>(productoService.registrarProducto(producto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/disponibles")
+    public ResponseEntity<List<ProductoSalidaDto>> obtenerReservasDisponiblesPorParametros(@RequestBody DisponibilidadEntradaDto disponibilidadEntrada) throws ResourceNotFoundException {
+        List<ProductoSalidaDto> productos = productoService.obtenerProductosDisponiblesPorParametros(disponibilidadEntrada);
+        return ResponseEntity.ok(productos);
     }
 
 

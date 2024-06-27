@@ -1,10 +1,12 @@
 package com.example.demo.service;
 
 
+import com.example.demo.dto.entrada.disponibilidad.DisponibilidadEntradaDto;
 import com.example.demo.dto.entrada.producto.ProductoEntradaDto;
 import com.example.demo.dto.modificacion.producto.ProductoModificacionEntradaDto;
 import com.example.demo.dto.salida.categoria.CategoriaSalidaDto;
 import com.example.demo.dto.salida.producto.ProductoSalidaDto;
+import com.example.demo.dto.salida.reserva.ReservaSalidaDto;
 import com.example.demo.entity.Categoria;
 import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.ResourceNotFoundException;
@@ -25,4 +27,6 @@ public interface IProductoService {
 
     List<ProductoSalidaDto> listarProductosPorCategorias(List<Categoria> categorias);
     List<ProductoSalidaDto> buscarProductosPorNombre(String nombre) throws ResourceNotFoundException;
+    List<ProductoSalidaDto> obtenerProductosDisponiblesPorParametros(DisponibilidadEntradaDto disponibilidadEntrada) throws ResourceNotFoundException;
+
 }

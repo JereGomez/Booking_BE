@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.entrada.disponibilidad.DisponibilidadEntradaDto;
 import com.example.demo.dto.entrada.reserva.ReservaEntradaDto;
 import com.example.demo.dto.salida.favorito.FavoritoSalidaDto;
 import com.example.demo.dto.salida.imagen.ImagenSalidaDto;
@@ -20,6 +21,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -80,19 +82,9 @@ public class ReservaService implements IReservaService {
         }
 
         // Verificar disponibilidad
-        LocalDate disponibilidadDesde = convertToLocalDate(productoSalidaDto.getDisponibilidad_Desde());
-        LocalDate disponibilidadHasta = convertToLocalDate(productoSalidaDto.getDisponibilidad_Hasta());
-
-        if (reserva.getFechaInicio().isBefore(disponibilidadDesde) || reserva.getFechaFin().isAfter(disponibilidadHasta)) {
-            throw new BadRequestException("Producto no disponible en las fechas seleccionadas");
-        }
-
-        // Verificar solapamiento de reservas existentes
-        List<Reserva> reservas = reservaRepository.findByProductoIdAndFechaFinAfterAndFechaInicioBefore(
-                productoSalidaDto.getId(), reserva.getFechaInicio(), reserva.getFechaFin());
-        if (!reservas.isEmpty()) {
-            throw new BadRequestException("El producto ya está reservado en las fechas seleccionadas");
-        } else {
+        if (!verificarDisponibilidad(productoSalidaDto,reserva)) {
+            throw new BadRequestException("Producto no disponible en las fechas seleccionadas / El producto ya está reservado en las fechas seleccionadas");
+        }{
             double precioTotal = calcularPrecioTotal(reserva.getFechaInicio(), reserva.getFechaFin(), productoSalidaDto.getPrecioNoche());
             reserva.setPrecio_total(precioTotal);
             LOGGER.info("ReservaEntradaDto: " + JsonPrinter.toString(reserva));
@@ -144,6 +136,8 @@ public class ReservaService implements IReservaService {
                 .collect(Collectors.toList());
     }
 
+
+
     public double calcularPrecioTotal(LocalDate fechaInicio, LocalDate fechaFin, double precioNoche) {
         long dias = Duration.between(fechaInicio.atStartOfDay(), fechaFin.atStartOfDay()).toDays();
         return dias * precioNoche;
@@ -151,6 +145,21 @@ public class ReservaService implements IReservaService {
     private LocalDate convertToLocalDate(Date date) {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
+
+    public boolean verificarDisponibilidad(ProductoSalidaDto producto, ReservaEntradaDto reserva){
+
+        // Verificar disponibilidad
+        LocalDate disponibilidadDesde = convertToLocalDate(producto.getDisponibilidad_Desde());
+        LocalDate disponibilidadHasta = convertToLocalDate(producto.getDisponibilidad_Hasta());
+
+        List<Reserva> reservas = reservaRepository.findByProductoIdAndFechaFinAfterAndFechaInicioBefore(
+                producto.getId(), reserva.getFechaInicio(), reserva.getFechaFin());
+        Boolean noDisponible = (reserva.getFechaInicio().isBefore(disponibilidadDesde) || reserva.getFechaFin().isAfter(disponibilidadHasta) || !reservas.isEmpty());
+        return !noDisponible;
+    }
+
+
+
     //funcion para armar la estructura del eamil
     private void enviarCorreoReserva(ReservaSalidaDto reservaSalidaDto) {
         String destinatario = reservaSalidaDto.getUsuarioSalidaDto().getEmail();
@@ -176,6 +185,8 @@ public class ReservaService implements IReservaService {
                 .addMappings(mapper -> mapper.map(Reserva::getUsuario, ReservaSalidaDto::setUsuarioSalidaDto));
         modelMapper.typeMap(Reserva.class, ReservaSalidaDto.class)
                 .addMappings(mapper -> mapper.map(Reserva::getProducto, ReservaSalidaDto::setProductoSalidaDto));
+
+        modelMapper.typeMap(DisponibilidadEntradaDto.class, Reserva.class);
 
         //modelMapper.typeMap(Imagen.class, ImagenEntradaDto.class);
     }

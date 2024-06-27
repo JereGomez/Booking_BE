@@ -82,21 +82,21 @@ public class FavoritoController {
         return new ResponseEntity<>(favoritoService.buscarFavoritoPorId(id), HttpStatus.OK);
     }
 
-    @Operation(summary = "Eliminación de un favorito por Id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "favorito eliminado correctamente",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = String.class))}),
-            @ApiResponse(responseCode = "400", description = "Id inválido",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "favorito no encontrado",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Server error",
-                    content = @Content)
-    })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarFavorito(@PathVariable Long id) throws ResourceNotFoundException {
-        favoritoService.eliminarFavorito(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @Operation(summary = "Eliminación de un favorito por Id")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "204", description = "favorito eliminado correctamente",
+//                    content = {@Content(mediaType = "application/json",
+//                            schema = @Schema(implementation = String.class))}),
+//            @ApiResponse(responseCode = "400", description = "Id inválido",
+//                    content = @Content),
+//            @ApiResponse(responseCode = "404", description = "favorito no encontrado",
+//                    content = @Content),
+//            @ApiResponse(responseCode = "500", description = "Server error",
+//                    content = @Content)
+//    })
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> eliminarFavorito(@PathVariable Long id) throws ResourceNotFoundException {
+//        favoritoService.eliminarFavorito(id);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 }

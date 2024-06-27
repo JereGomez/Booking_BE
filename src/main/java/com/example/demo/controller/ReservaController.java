@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.entrada.disponibilidad.DisponibilidadEntradaDto;
 import com.example.demo.dto.entrada.reserva.ReservaEntradaDto;
 import com.example.demo.dto.salida.reserva.ReservaSalidaDto;
 import com.example.demo.exceptions.BadRequestException;
@@ -66,4 +67,7 @@ public class ReservaController {
         List<ReservaSalidaDto> reservas = reservaService.obtenerReservasPorUsuario();
         return ResponseEntity.ok(reservas);
     }
+
+
+
 }

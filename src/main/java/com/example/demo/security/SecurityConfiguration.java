@@ -49,6 +49,7 @@ public class SecurityConfiguration {
                             "/productos/listar",
                             "/productos/{id}",
                             "/productos/categorias",
+                            "/productos/disponibles",
                             "/reservas/registrar",
                             "/reservas/listar",
                             "/reservar/mis-reservas",

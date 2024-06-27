@@ -125,6 +125,8 @@ public class FavoritoService implements IFavoritoService{
         }
 
     }
+
+
     private boolean chequearExistencia(Favorito favoritoEntidad) {
         boolean flag = false;
         List<Favorito> favoritosPersistidos = favoritoRepository.findAll();

@@ -90,7 +90,7 @@ public class Producto {
         this.capacidad = capacidad;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 

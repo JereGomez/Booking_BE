@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.entrada.caracteristica.CaracteristicaEntradaDto;
 import com.example.demo.dto.entrada.categoria.CategoriaEntradaDto;
+import com.example.demo.dto.entrada.disponibilidad.DisponibilidadEntradaDto;
 import com.example.demo.dto.entrada.imagen.ImagenEntradaDto;
 import com.example.demo.dto.entrada.producto.ProductoEntradaDto;
 import com.example.demo.dto.modificacion.producto.ProductoModificacionEntradaDto;
@@ -9,13 +10,12 @@ import com.example.demo.dto.salida.caracteristica.CaracteristicaSalidaDto;
 import com.example.demo.dto.salida.categoria.CategoriaSalidaDto;
 import com.example.demo.dto.salida.imagen.ImagenSalidaDto;
 import com.example.demo.dto.salida.producto.ProductoSalidaDto;
-import com.example.demo.entity.Caracteristica;
-import com.example.demo.entity.Categoria;
-import com.example.demo.entity.Imagen;
-import com.example.demo.entity.Producto;
+import com.example.demo.entity.*;
 import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.ResourceNotFoundException;
+import com.example.demo.repository.FavoritoRepository;
 import com.example.demo.repository.ProductoRepository;
+import com.example.demo.repository.ReservaRepository;
 import com.example.demo.utils.JsonPrinter;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -23,15 +23,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ProductoService implements IProductoService{
     private final Logger LOGGER = LoggerFactory.getLogger(ProductoService.class);
     private ProductoRepository productoRepository;
+
+    private ReservaRepository reservaRepository;
+
+    private FavoritoRepository favoritoRepository;
     private ModelMapper modelMapper;
 
     private ImagenService imagenService;
@@ -39,9 +44,13 @@ public class ProductoService implements IProductoService{
     private CaracteristicaService caracteristicaService;
     private CategoriaService categoriaService;
 
+
+
     @Autowired
-    public ProductoService(ProductoRepository productoRepository, ModelMapper modelMapper, ImagenService imagenService, CaracteristicaService caracteristicaService, CategoriaService categoriaService) {
+    public ProductoService(ProductoRepository productoRepository, ReservaRepository reservaRepository, FavoritoRepository favoritoRepository, ModelMapper modelMapper, ImagenService imagenService, CaracteristicaService caracteristicaService, CategoriaService categoriaService) {
         this.productoRepository = productoRepository;
+        this.reservaRepository = reservaRepository;
+        this.favoritoRepository = favoritoRepository;
         this.modelMapper = modelMapper;
         this.caracteristicaService = caracteristicaService;
         this.categoriaService = categoriaService;
@@ -105,7 +114,16 @@ public class ProductoService implements IProductoService{
 
     @Override
     public void eliminarProducto(Long id) throws ResourceNotFoundException {
+        Producto producto = productoRepository.getById(id);
         if (buscarProductoPorId(id) != null) {
+            for(Imagen img : producto.getImagenes()){
+                imagenService.eliminarImagenByID(img.getId());
+            }
+            for(Favorito fav : favoritoRepository.findAll()){
+                if(fav.getProducto() == producto){
+                    favoritoRepository.deleteById(fav.getId());
+                }
+            }
             productoRepository.deleteById(id);
             LOGGER.warn("Se ha eliminado el producto con id: {}", id);
         } else {
@@ -161,6 +179,65 @@ public class ProductoService implements IProductoService{
                 .toList();
         LOGGER.info("Listado de todos los productos que coinciden con el nombre enviado: {}", JsonPrinter.toString(productoSalidaDtos));
         return productoSalidaDtos;
+    }
+    @Override
+    public List<ProductoSalidaDto> obtenerProductosDisponiblesPorParametros(DisponibilidadEntradaDto disponibilidadEntrada) throws ResourceNotFoundException {
+        List<ProductoSalidaDto> productosSalida = listarProductos();
+        List<ProductoSalidaDto> productosDisponibles = new ArrayList<>();
+        Boolean tienePais = disponibilidadEntrada.getPais()!=null;
+        LOGGER.info(String.valueOf(productosSalida.size()));
+        LOGGER.info(JsonPrinter.toString(disponibilidadEntrada));
+        for(ProductoSalidaDto  producto : productosSalida){
+            LocalDate prdDesde = convertToLocalDate(producto.getDisponibilidad_Desde());
+            LocalDate prdHasta = convertToLocalDate(producto.getDisponibilidad_Hasta());
+            //producto dentro de fehcas de disponibilidad deseada
+            if (tienePais){
+                if(producto.getUbicacion().getPais().equals(disponibilidadEntrada.getPais()) ){
+                    //chequear disponibilidad del producto
+                    if(verificarDisponibilidad(producto, disponibilidadEntrada)){
+                        productosDisponibles.add(producto);
+                    }
+                }
+            }
+            else{
+                if(disponibilidadEntrada.getFechaInicio().isBefore(prdDesde)){
+                    //chequear disponibilidad del producto
+                    if(verificarDisponibilidad(producto, disponibilidadEntrada)){
+                        productosDisponibles.add(producto);
+                    }
+                }
+            }
+
+
+
+            LOGGER.info(String.valueOf(productosDisponibles.size()));
+        }
+        return productosDisponibles;
+    }
+
+    public boolean verificarDisponibilidad(ProductoSalidaDto producto, DisponibilidadEntradaDto disponibilidadEntradaDto){
+        Boolean disponible = true;
+        LocalDate disponibilidadDesde = convertToLocalDate(producto.getDisponibilidad_Desde());
+        LocalDate disponibilidadHasta = convertToLocalDate(producto.getDisponibilidad_Hasta());
+        List<Reserva> reservas = reservaRepository.findByProductoIdAndFechaFinAfterAndFechaInicioBefore(
+                producto.getId(), disponibilidadEntradaDto.getFechaInicio(), disponibilidadEntradaDto.getFechaFin());
+        if(disponibilidadDesde.isAfter(disponibilidadEntradaDto.getFechaInicio())){
+            disponible = false;
+        }
+        LOGGER.info(disponible.toString());
+        if(disponibilidadHasta.isBefore(disponibilidadEntradaDto.getFechaFin())){
+            disponible = false;
+        }
+        LOGGER.info(disponible.toString());
+        if(!reservas.isEmpty()){
+            disponible = false;
+        }
+        LOGGER.info(disponible.toString());
+        return disponible;
+    }
+
+    private LocalDate convertToLocalDate(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
 

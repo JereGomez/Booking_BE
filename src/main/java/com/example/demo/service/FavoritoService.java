@@ -90,11 +90,7 @@ public class FavoritoService implements IFavoritoService{
                 .stream()
                 .map(favorito -> modelMapper.map(favorito, FavoritoSalidaDto.class))
                 .toList();
-        for(FavoritoSalidaDto fav : favoritoSalidaDtos){
-            if(!(fav.getUsuario().getEmail() == usuarioSession)){
-                favoritoSalidaDtos.remove(fav);
-            }
-        }
+        favoritoSalidaDtos.removeIf(fav -> !fav.getUsuario().getEmail().equals(usuarioSession));
         LOGGER.info("Listado de favoritos: {}", JsonPrinter.toString(favoritoSalidaDtos));
         return favoritoSalidaDtos;
     }

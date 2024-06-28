@@ -37,7 +37,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry ->{
 
-                    registry.requestMatchers("/auth/login","/home", "/usuarios/registrar/**","/login","/logout","/productos/","productos/nombres").permitAll();//pagina del home inicial y el login, registro de usuarios
+                    registry.requestMatchers("/auth/login","/home", "/usuarios/registrar","/productos/","productos/nombres","/productos/listar").permitAll();//pagina del home inicial y el login, registro de usuarios
                     //registry.requestMatchers("/usuarios/admin/**","admin/home/**","/productos/registrar","/productos/**","/usuarios/listar","/favoritos/**").hasRole("ADMIN");//toda url que tenga admin sera permitido solo para roles admin
                     registry.requestMatchers("/**").hasRole("ADMIN");//toda url sera permitido solo para roles admin
                     registry.requestMatchers("/categorias/listar",
@@ -46,14 +46,12 @@ public class SecurityConfiguration {
                             "/favoritos/registrar",
                             "/favoritos/{id}",
                             "/imagenes/listar",
-                            "/productos/listar",
                             "/productos/{id}",
                             "/productos/categorias",
                             "/productos/disponibles",
                             "/reservas/registrar",
                             "/reservas/listar",
                             "/reservar/mis-reservas",
-                            "/usuarios/registrar",
                             "/usuarios/home"
                     ).hasRole("USER");
                     registry.anyRequest().authenticated();

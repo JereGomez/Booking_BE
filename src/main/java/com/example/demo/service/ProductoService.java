@@ -119,10 +119,10 @@ public class ProductoService implements IProductoService{
             for(Imagen img : producto.getImagenes()){
                 imagenService.eliminarImagenByID(img.getId());
             }
-            for(Favorito fav : favoritoRepository.findAll()){
-                if(fav.getProducto() == producto){
-                    favoritoRepository.deleteById(fav.getId());
-                }
+            // for(Favorito fav : favoritoRepository.findAll()){
+            //     if(fav.getProducto() == producto){
+            //         favoritoRepository.deleteById(fav.getId());
+            //     }
             }
             productoRepository.deleteById(id);
             LOGGER.warn("Se ha eliminado el producto con id: {}", id);

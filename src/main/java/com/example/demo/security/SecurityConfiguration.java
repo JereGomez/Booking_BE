@@ -50,8 +50,15 @@ public class SecurityConfiguration {
                             "/reservas/listar",
                             "/reservar/mis-reservas",
                             "/usuarios/home"
-                    ).hasAnyRole("USER", "ADMIN");
-                    registry.requestMatchers("/**").hasRole("ADMIN");//toda url sera permitido solo para roles admin
+                    ).hasRole("USER");
+                    registry.requestMatchers(
+                            "/favoritos/**",
+                            "/imagenes/**",
+                            "/reservar/**",
+                            "/usuarios/**",
+                            "/caracteristicas/**"
+                            "/categorias/**"
+                            "/productos/**).hasRole("ADMIN");//toda url sera permitido solo para roles admin
                     registry.anyRequest().authenticated();
                 })
                 .sessionManagement(session ->

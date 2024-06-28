@@ -42,7 +42,7 @@ public class FavoritoController {
     })
 
 
-    @GetMapping("/mis-favortios")
+    @GetMapping("/mis-favoritos")
     public ResponseEntity<List<FavoritoSalidaDto>> listarFavoritos() {
         List<FavoritoSalidaDto> favoritos = favoritoService.listarFavoritosByusuario();
         return new ResponseEntity<>(favoritos, HttpStatus.OK);

@@ -71,14 +71,14 @@ public class SecurityConfiguration {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
-                .logout(httpSecurityLogoutConfigurer -> {
-                    httpSecurityLogoutConfigurer
-                            .logoutUrl("/auth/logout")
-                            .logoutSuccessHandler(logoutSuccessHandler())  // Manejar el éxito del logout
-                            .invalidateHttpSession(true)
-                            .deleteCookies("JSESSIONID")
-                            .permitAll();
-                })
+                // .logout(httpSecurityLogoutConfigurer -> {
+                //     httpSecurityLogoutConfigurer
+                //             .logoutUrl("/auth/logout")
+                //             .logoutSuccessHandler(logoutSuccessHandler())  // Manejar el éxito del logout
+                //             .invalidateHttpSession(true)
+                //             .deleteCookies("JSESSIONID")
+                //             .permitAll();
+                // })
                 .httpBasic(withDefaults())
                 .build();
     }

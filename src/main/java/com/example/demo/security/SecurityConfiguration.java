@@ -58,7 +58,8 @@ public class SecurityConfiguration {
                             "/usuarios/**",
                             "/caracteristicas/**"
                             "/categorias/**"
-                            "/productos/**).hasRole("ADMIN");//toda url sera permitido solo para roles admin
+                            "/productos/**",
+                            "/**").hasRole("ADMIN");//toda url sera permitido solo para roles admin
                     registry.anyRequest().authenticated();
                 })
                 .sessionManagement(session ->

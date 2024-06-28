@@ -123,7 +123,7 @@ public class ProductoService implements IProductoService{
             //     if(fav.getProducto() == producto){
             //         favoritoRepository.deleteById(fav.getId());
             //     }
-            }
+            // }
             productoRepository.deleteById(id);
             LOGGER.warn("Se ha eliminado el producto con id: {}", id);
         } else {

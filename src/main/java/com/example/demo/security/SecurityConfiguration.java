@@ -52,21 +52,28 @@ public class SecurityConfiguration {
                             "/usuarios/home"
                     ).hasRole("USER");
                     //registry.requestMatchers("/usuarios/admin/**","admin/home/**","/productos/registrar","/productos/**","/usuarios/listar","/favoritos/**").hasRole("ADMIN");//toda url que tenga admin sera permitido solo para roles admin
-                    registry.requestMatchers("/**").hasRole("ADMIN");//toda url sera permitido solo para roles admin
+                    registry.requestMatchers("/categorias/listar",
+                            "/caracteristicas/listar",
+                            "/favoritos/mis-favortios",
+                            "/favoritos/registrar",
+                            "/favoritos/{id}",
+                            "/imagenes/listar",
+                            "/productos/{id}",
+                            "/productos/categorias",
+                            "/productos/disponibles",
+                            "/reservas/registrar",
+                            "/reservas/listar",
+                            "/reservar/mis-reservas",
+                            "/usuarios/home",
+                            "/**").hasRole("ADMIN");//toda url sera permitido solo para roles admin
                     registry.anyRequest().authenticated();
                 })
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
-                //.formLogin(httpSecurityFormLoginConfigurer -> {
-                    //httpSecurityFormLoginConfigurer
-                            //.loginPage("/login")
-                            //.successHandler(new AuthenticationSuccessHandler())//esto es para redireccionar al usuario despues de login exitoso.
-                            //.permitAll();
-                //})
                 .logout(httpSecurityLogoutConfigurer -> {
                     httpSecurityLogoutConfigurer
-                            .logoutUrl("/logout")
+                            .logoutUrl("/auth/logout")
                             .logoutSuccessHandler(logoutSuccessHandler())  // Manejar el éxito del logout
                             .invalidateHttpSession(true)
                             .deleteCookies("JSESSIONID")

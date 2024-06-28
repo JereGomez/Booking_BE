@@ -37,6 +37,20 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry ->{
                     registry.requestMatchers("/auth/login","/home", "/usuarios/registrar","/productos/","productos/nombres","/productos/listar").permitAll();//pagina del home inicial y el login, registro de usuarios
+                     registry.requestMatchers("/categorias/listar",
+                            "/caracteristicas/listar",
+                            "/favoritos/mis-favortios",
+                            "/favoritos/registrar",
+                            "/favoritos/{id}",
+                            "/imagenes/listar",
+                            "/productos/{id}",
+                            "/productos/categorias",
+                            "/productos/disponibles",
+                            "/reservas/registrar",
+                            "/reservas/listar",
+                            "/reservar/mis-reservas",
+                            "/usuarios/home",
+                            "/**").hasRole("ADMIN");
                     registry.requestMatchers("/categorias/listar",
                             "/caracteristicas/listar",
                             "/favoritos/mis-favortios",
@@ -52,20 +66,7 @@ public class SecurityConfiguration {
                             "/usuarios/home"
                     ).hasRole("USER");
                     //registry.requestMatchers("/usuarios/admin/**","admin/home/**","/productos/registrar","/productos/**","/usuarios/listar","/favoritos/**").hasRole("ADMIN");//toda url que tenga admin sera permitido solo para roles admin
-                    registry.requestMatchers("/categorias/listar",
-                            "/caracteristicas/listar",
-                            "/favoritos/mis-favortios",
-                            "/favoritos/registrar",
-                            "/favoritos/{id}",
-                            "/imagenes/listar",
-                            "/productos/{id}",
-                            "/productos/categorias",
-                            "/productos/disponibles",
-                            "/reservas/registrar",
-                            "/reservas/listar",
-                            "/reservar/mis-reservas",
-                            "/usuarios/home",
-                            "/**").hasRole("ADMIN");//toda url sera permitido solo para roles admin
+                   //toda url sera permitido solo para roles admin
                     registry.anyRequest().authenticated();
                 })
                 .sessionManagement(session ->

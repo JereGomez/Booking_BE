@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("reservas")
+@RequestMapping("/reservas")
 public class ReservaController {
     private final Logger LOGGER = LoggerFactory.getLogger(ReservaController.class);
     @Autowired

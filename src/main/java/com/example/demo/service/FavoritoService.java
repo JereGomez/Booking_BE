@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 @Service
 public class FavoritoService implements IFavoritoService{
     private final Logger LOGGER = LoggerFactory.getLogger(FavoritoService.class);
@@ -86,12 +87,11 @@ public class FavoritoService implements IFavoritoService{
     @Override
     public List<FavoritoSalidaDto> listarFavoritosByusuario() {
         String usuarioSession = usuarioService.usuarioEnSession().getEmail();
-        List<FavoritoSalidaDto> favoritoSalidaDtos = favoritoRepository.findAll()
-                .stream()
-                .map(favorito -> modelMapper.map(favorito, FavoritoSalidaDto.class))
-                .filter(fav -> fav.getUsuario().getEmail().equals(usuarioSession))
-                .collect(Collectors.toList());
-
+       List<FavoritoSalidaDto> favoritoSalidaDtos = favoritoRepository.findAll()
+            .stream()
+            .map(favorito -> modelMapper.map(favorito, FavoritoSalidaDto.class))
+            .filter(fav -> fav.getUsuario().getEmail().equals(usuarioSession))
+            .collect(Collectors.toList());
         LOGGER.info("Listado de favoritos: {}", JsonPrinter.toString(favoritoSalidaDtos));
         return favoritoSalidaDtos;
     }

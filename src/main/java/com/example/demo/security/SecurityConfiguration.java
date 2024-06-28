@@ -56,8 +56,8 @@ public class SecurityConfiguration {
                             "/imagenes/**",
                             "/reservar/**",
                             "/usuarios/**",
-                            "/caracteristicas/**"
-                            "/categorias/**"
+                            "/caracteristicas/**",
+                            "/categorias/**",
                             "/productos/**",
                             "/**").hasRole("ADMIN");//toda url sera permitido solo para roles admin
                     registry.anyRequest().authenticated();

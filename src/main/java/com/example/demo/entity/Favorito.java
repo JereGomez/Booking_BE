@@ -22,7 +22,7 @@ public class Favorito {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "producto_id")
     private Producto producto;
 

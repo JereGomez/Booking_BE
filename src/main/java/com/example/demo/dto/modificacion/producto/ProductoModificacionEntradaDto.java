@@ -28,8 +28,8 @@ public class ProductoModificacionEntradaDto {
     @NotNull
     private Date disponibilidad_Hasta;
 
-    @NotNull
-    private UbicacionModificacionEntradaDto ubicacionModificacionEntradaDto;
+//    @NotNull
+//    private UbicacionModificacionEntradaDto ubicacionModificacionEntradaDto;
 
     @NotNull(message = "Debe proveerse las imagenes del producto que se desea modificar")
     private List<ImagenModificacionEntradaDto> imagenes;
@@ -50,7 +50,7 @@ public class ProductoModificacionEntradaDto {
         this.precioNoche = precioNoche;
         disponibilidad_Desde = disponibilidadDesde;
         disponibilidad_Hasta = disponibilidadHasta;
-        this.ubicacionModificacionEntradaDto = ubicacionModificacionEntradaDto;
+        //this.ubicacionModificacionEntradaDto = ubicacionModificacionEntradaDto;
         this.imagenes = imagenes;
         this.categorias = categorias;
         this.caracteristicas = caracteristicas;
@@ -140,13 +140,13 @@ public class ProductoModificacionEntradaDto {
         this.disponibilidad_Hasta = disponibilidad_Hasta;
     }
 
-    public UbicacionModificacionEntradaDto getUbicacionModificacionEntradaDto() {
-        return ubicacionModificacionEntradaDto;
-    }
-
-    public void setUbicacionModificacionEntradaDto(UbicacionModificacionEntradaDto ubicacionModificacionEntradaDto) {
-        this.ubicacionModificacionEntradaDto = ubicacionModificacionEntradaDto;
-    }
+//    public UbicacionModificacionEntradaDto getUbicacionModificacionEntradaDto() {
+//        return ubicacionModificacionEntradaDto;
+//    }
+//
+//    public void setUbicacionModificacionEntradaDto(UbicacionModificacionEntradaDto ubicacionModificacionEntradaDto) {
+//        this.ubicacionModificacionEntradaDto = ubicacionModificacionEntradaDto;
+//    }
 
     @Override
     public String toString() {

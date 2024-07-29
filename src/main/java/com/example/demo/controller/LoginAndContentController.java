@@ -36,20 +36,7 @@ public class LoginAndContentController {
     public ResponseEntity<UsuarioSalidaDto> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         return new ResponseEntity<>(usuarioService.login(loginRequest, session), HttpStatus.OK);
     }
-    @GetMapping("/home")
-    public String handleWelcome() {
-        return "home";
-    }
 
-    @GetMapping("/admin/home")
-    public String handleAdminHome() {
-        return "home_admin";
-    }
-
-    @GetMapping("/usuario/home")
-    public String handleUserHome() {
-        return "home_user";
-    }
     @GetMapping("/logout")
     public ResponseEntity<UsuarioSalidaDto> logout(HttpSession session) {
         return new ResponseEntity<>(usuarioService.logout(session), HttpStatus.OK);

@@ -21,8 +21,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import javax.mail.MessagingException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,20 +30,21 @@ public class UsuarioService implements IUsuarioService {
     private AuthenticationManager authenticationManager;
     private final Logger LOGGER = LoggerFactory.getLogger(UsuarioService.class);
     private UsuarioRepository usuarioRepository;
-    private MailService mailService;
+    @Autowired
+    private EmailService emailService;
     private ModelMapper modelMapper;
 
     @Autowired
-    public UsuarioService(AuthenticationManager authenticationManager, UsuarioRepository usuarioRepository, MailService mailService, ModelMapper modelMapper) {
+    public UsuarioService(AuthenticationManager authenticationManager, UsuarioRepository usuarioRepository, EmailService emailService, ModelMapper modelMapper) {
         this.authenticationManager = authenticationManager;
         this.usuarioRepository = usuarioRepository;
-        this.mailService = mailService;
+        this.emailService = emailService;
         this.modelMapper = modelMapper;
         configureMapping();
     }
 
     @Override
-    public UsuarioSalidaDto registrarUsuario(UsuarioEntradaDto usuario) throws MessagingException {
+    public UsuarioSalidaDto registrarUsuario(UsuarioEntradaDto usuario) {
 
         LOGGER.info("UsuarioEntradaDto: " + JsonPrinter.toString(usuario));
         Usuario usuarioEntidad = modelMapper.map(usuario, Usuario.class);
@@ -54,7 +53,7 @@ public class UsuarioService implements IUsuarioService {
         Usuario usuarioAPersistir = usuarioRepository.save(usuarioEntidad);
         //transformamos la entidad obtenida en salidaDto
         UsuarioSalidaDto usuarioSalidaDto = modelMapper.map(usuarioAPersistir, UsuarioSalidaDto.class);
-        mailService.send(usuarioSalidaDto.getEmail(), "Su cuenta fue creada exitosamente", "Bienvenido " + usuarioSalidaDto.getNombre() +", gracias por confiar en nosotros. ¡Ya puedes ingresar con tu usuario y encontrar tu próxima aventura!");
+        emailService.sendSimpleMessage(usuarioSalidaDto.getEmail(),"Su cuenta fue creada exitosamente","Bienvenido " + usuarioSalidaDto.getNombre() +", gracias por confiar en nosotros. ¡Ya puedes ingresar con tu usuario y encontrar tu próxima aventura!");
         LOGGER.info("UsuarioSalidaDto: " + JsonPrinter.toString(usuarioSalidaDto));
         return usuarioSalidaDto;
 
@@ -146,6 +145,23 @@ public class UsuarioService implements IUsuarioService {
     public UsuarioSalidaDto logout(HttpSession session) {
         session.invalidate();
         return null;
+    }
+
+    @Override
+    public UsuarioSalidaDto usuarioEnSession() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Usuario usuario = usuarioRepository.findByEmail(userDetails.getUsername());
+        return modelMapper.map(usuario, UsuarioSalidaDto.class);
+    }
+
+
+
+    public boolean checkUsuarioEnSesionById(Long id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Usuario usuario = usuarioRepository.findByEmail(userDetails.getUsername());
+        return usuario.getId().equals(id);
     }
 
     private boolean chequearExistencia(Usuario usuarioEntidad) {

@@ -24,12 +24,12 @@ public class Producto {
 
     @Column()
     private Date disponibilidad_Hasta;
-    @OneToOne(cascade=CascadeType.ALL )
+    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST )
     @JoinColumn(name = "ubicacion_id")
     private Ubicacion ubicacion;
 
-   @OneToMany(cascade=CascadeType.ALL )
-   @JoinColumn(name="producto_id",referencedColumnName="id")
+    @OneToMany(cascade=CascadeType.ALL )
+    @JoinColumn(name="producto_id",referencedColumnName="id")
     private List<Imagen> imagenes;
 
     @ManyToMany()
@@ -90,7 +90,7 @@ public class Producto {
         this.capacidad = capacidad;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 

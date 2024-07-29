@@ -24,12 +24,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
+
 import javax.swing.text.StyledEditorKit;
 import java.util.List;
 
 @RestController
-@RequestMapping("usuarios")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
 
@@ -55,7 +55,9 @@ public class UsuarioController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    public ResponseEntity<UsuarioSalidaDto> guardar(@RequestBody @Valid UsuarioEntradaDto usuario) throws MessagingException {
+
+    public ResponseEntity<UsuarioSalidaDto> guardar(@RequestBody @Valid UsuarioEntradaDto usuario){
+
         usuario.setContrasenia(passwordEncoder.encode(usuario.getContrasenia()));
         return new ResponseEntity<>(usuarioService.registrarUsuario(usuario), HttpStatus.CREATED);
     }
@@ -75,7 +77,7 @@ public class UsuarioController {
                     content = @Content)
     })
 
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarUsuario(@PathVariable Long id) throws ResourceNotFoundException {
         usuarioService.eliminarUsuario(id);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -92,9 +94,11 @@ public class UsuarioController {
             @ApiResponse(responseCode = "500", description = "UServer error",
                     content = @Content)
     })
-    @PutMapping("/admin/{id}")
+
+    @PutMapping("/{id}")
     public ResponseEntity<UsuarioSalidaDto> actualizarUsuario(@RequestBody UsuarioModificacionEntradaDto usuario, @PathVariable Long id){
         return new ResponseEntity<>(usuarioService.actualizarUsuario(usuario, id),HttpStatus.OK);
+
     }
     @Operation(summary = "Listado de todos los usuarios")
     @ApiResponses(value = {
@@ -108,14 +112,16 @@ public class UsuarioController {
     })
 
 
-    @GetMapping("/admin/listar")
+
+    @GetMapping("/listar")
     public ResponseEntity<List<UsuarioSalidaDto>> listarUsuarios(){
+
         return new ResponseEntity<>(usuarioService.listarUsuarios(), HttpStatus.OK);
     }
 
-    @GetMapping("/admin/home")
-    public ResponseEntity<Boolean> adminHome(){
-        return new ResponseEntity<>(true, HttpStatus.OK);
+    @GetMapping("/home")
+    public ResponseEntity<UsuarioSalidaDto> usuarioEnSession() {
+        return new ResponseEntity<>(usuarioService.usuarioEnSession(), HttpStatus.OK);
     }
 
 

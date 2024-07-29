@@ -8,9 +8,9 @@ import com.example.demo.exceptions.ResourceNotFoundException;
 import java.util.List;
 
 public interface IFavoritoService {
-    FavoritoSalidaDto registrarFavorito(FavoritoEntradaDto favorito) throws BadRequestException;
+    FavoritoSalidaDto registrarFavorito(FavoritoEntradaDto favorito) throws BadRequestException, ResourceNotFoundException;
 
-    List<FavoritoSalidaDto> listarFavoritos();
+    List<FavoritoSalidaDto> listarFavoritosByusuario();
 
     FavoritoSalidaDto buscarFavoritoPorId(Long id);
 

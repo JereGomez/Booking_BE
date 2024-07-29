@@ -1,14 +1,12 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.entrada.caracteristica.CaracteristicaEntradaDto;
-import com.example.demo.dto.entrada.categoria.CategoriaEntradaDto;
 import com.example.demo.dto.modificacion.caracteristica.CaracteristicaModificacionEntradaDto;
 import com.example.demo.dto.salida.caracteristica.CaracteristicaSalidaDto;
-import com.example.demo.dto.salida.categoria.CategoriaSalidaDto;
 import com.example.demo.entity.Caracteristica;
-import com.example.demo.entity.Categoria;
+import com.example.demo.entity.Producto;
 import com.example.demo.repository.CaracteristicaRepository;
-import com.example.demo.repository.CategoriaRepository;
+import com.example.demo.repository.ProductoRepository;
 import com.example.demo.utils.JsonPrinter;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -21,11 +19,13 @@ import java.util.List;
 public class CaracteristicaService implements  ICaracteristicaService{
     private final Logger LOGGER = LoggerFactory.getLogger(CategoriaService.class);
     private CaracteristicaRepository caracteristicaRepository;
+    private ProductoRepository productoRepository;
     private ModelMapper modelMapper;
 
     @Autowired
-    public CaracteristicaService(CaracteristicaRepository caracteristicaRepository, ModelMapper modelMapper) {
+    public CaracteristicaService(CaracteristicaRepository caracteristicaRepository, ProductoRepository productoRepository, ModelMapper modelMapper) {
         this.caracteristicaRepository = caracteristicaRepository;
+        this.productoRepository = productoRepository;
         this.modelMapper = modelMapper;
         configureMapping();
     }
@@ -49,9 +49,15 @@ public class CaracteristicaService implements  ICaracteristicaService{
 
     @Override
     public Void eliminarCaracteristicaByID(Long id) {
-        if (caracteristicaRepository.findById(id).isPresent()) {
+        Caracteristica caracteristica = caracteristicaRepository.getById(id);
+        if (!caracteristicaRepository.findById(id).isPresent()) {
             throw new IllegalArgumentException("La caracteristica con is '" + id + " no existe");
         }
+        for(Producto prd : caracteristica.getProductos()){
+            prd.getCategorias().remove(caracteristica);
+            productoRepository.save(prd);
+        }
+
         caracteristicaRepository.deleteById(id);
         LOGGER.info("Se elimino la caracteristica con el id: {id}");
         return null;

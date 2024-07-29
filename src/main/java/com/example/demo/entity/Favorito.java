@@ -22,7 +22,7 @@ public class Favorito {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "producto_id")
     private Producto producto;
 

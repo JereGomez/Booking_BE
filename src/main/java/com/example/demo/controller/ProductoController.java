@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.entrada.disponibilidad.DisponibilidadEntradaDto;
 import com.example.demo.dto.entrada.producto.ProductoEntradaDto;
 import com.example.demo.dto.modificacion.producto.ProductoModificacionEntradaDto;
 import com.example.demo.dto.salida.categoria.CategoriaSalidaDto;
 import com.example.demo.dto.salida.producto.ProductoSalidaDto;
+import com.example.demo.dto.salida.reserva.ReservaSalidaDto;
 import com.example.demo.entity.Categoria;
 import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.ResourceNotFoundException;
@@ -23,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("productos")
+@RequestMapping("/productos")
 public class ProductoController {
     @Autowired
     public IProductoService productoService;
@@ -42,8 +44,8 @@ public class ProductoController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @GetMapping("/")
-    public ResponseEntity<List<ProductoSalidaDto>> listarProductos() {
+    @GetMapping("/listar")
+    public ResponseEntity<List<ProductoSalidaDto>> listarProductos() throws ResourceNotFoundException{
         return new ResponseEntity<>(productoService.listarProductos(), HttpStatus.OK);
     }
     //buscar producto con PathVariable
@@ -60,7 +62,7 @@ public class ProductoController {
                     content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoSalidaDto> obtenerProductoPorId(@PathVariable Long id) {
+    public ResponseEntity<ProductoSalidaDto> obtenerProductoPorId(@PathVariable Long id) throws ResourceNotFoundException{
         return new ResponseEntity<>(productoService.buscarProductoPorId(id), HttpStatus.OK);
     }
 
@@ -91,9 +93,15 @@ public class ProductoController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @PostMapping("/admin/")
+    @PostMapping("/")
     public ResponseEntity<ProductoSalidaDto> guardar(@RequestBody @Valid ProductoEntradaDto producto) throws BadRequestException {
         return new ResponseEntity<>(productoService.registrarProducto(producto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/disponibles")
+    public ResponseEntity<List<ProductoSalidaDto>> obtenerReservasDisponiblesPorParametros(@RequestBody DisponibilidadEntradaDto disponibilidadEntrada) throws ResourceNotFoundException {
+        List<ProductoSalidaDto> productos = productoService.obtenerProductosDisponiblesPorParametros(disponibilidadEntrada);
+        return ResponseEntity.ok(productos);
     }
 
 
@@ -110,8 +118,10 @@ public class ProductoController {
             @ApiResponse(responseCode = "500", description = "UServer error",
                     content = @Content)
     })
-    @PutMapping("/admin/{id}")
-    public ResponseEntity<ProductoSalidaDto> actualizarProducto(@PathVariable Long id, @RequestBody ProductoModificacionEntradaDto producto) {
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductoSalidaDto> actualizarProducto(@PathVariable Long id, @RequestBody ProductoModificacionEntradaDto producto) throws ResourceNotFoundException{
+
         return new ResponseEntity<>(productoService.actualizarProducto(id, producto), HttpStatus.OK);
     }
 
@@ -127,7 +137,7 @@ public class ProductoController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarProducto(@PathVariable Long id) throws ResourceNotFoundException {
         productoService.eliminarProducto(id);
         return new ResponseEntity<>(HttpStatus.OK);

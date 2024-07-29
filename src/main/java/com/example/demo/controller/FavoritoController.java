@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("favoritos")
+@RequestMapping("/favoritos")
 public class FavoritoController {
     private final Logger LOGGER = LoggerFactory.getLogger(FavoritoController.class);
 
@@ -42,9 +42,9 @@ public class FavoritoController {
     })
 
 
-    @GetMapping("/listar")
+    @GetMapping("/mis-favoritos")
     public ResponseEntity<List<FavoritoSalidaDto>> listarFavoritos() {
-        List<FavoritoSalidaDto> favoritos = favoritoService.listarFavoritos();
+        List<FavoritoSalidaDto> favoritos = favoritoService.listarFavoritosByusuario();
         return new ResponseEntity<>(favoritos, HttpStatus.OK);
     }
 
@@ -59,7 +59,7 @@ public class FavoritoController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    public ResponseEntity<FavoritoSalidaDto> guardar(@RequestBody @Valid FavoritoEntradaDto favorito) throws BadRequestException {
+    public ResponseEntity<FavoritoSalidaDto> guardar(@RequestBody @Valid FavoritoEntradaDto favorito) throws BadRequestException, ResourceNotFoundException {
         return new ResponseEntity<>(favoritoService.registrarFavorito(favorito), HttpStatus.CREATED);
     }
 
@@ -77,26 +77,26 @@ public class FavoritoController {
             @ApiResponse(responseCode = "500", description = "Server error",
                     content = @Content)
     })
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<FavoritoSalidaDto> obtenerProductoPorId(@PathVariable Long id) {
         return new ResponseEntity<>(favoritoService.buscarFavoritoPorId(id), HttpStatus.OK);
     }
 
-    @Operation(summary = "Eliminación de un favorito por Id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "favorito eliminado correctamente",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = String.class))}),
-            @ApiResponse(responseCode = "400", description = "Id inválido",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "favorito no encontrado",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Server error",
-                    content = @Content)
-    })
-    @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<Void> eliminarFavorito(@PathVariable Long id) throws ResourceNotFoundException {
-        favoritoService.eliminarFavorito(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+   @Operation(summary = "Eliminación de un favorito por Id")
+   @ApiResponses(value = {
+           @ApiResponse(responseCode = "204", description = "favorito eliminado correctamente",
+                   content = {@Content(mediaType = "application/json",
+                           schema = @Schema(implementation = String.class))}),
+           @ApiResponse(responseCode = "400", description = "Id inválido",
+                   content = @Content),
+           @ApiResponse(responseCode = "404", description = "favorito no encontrado",
+                   content = @Content),
+           @ApiResponse(responseCode = "500", description = "Server error",
+                   content = @Content)
+   })
+   @DeleteMapping("/{id}")
+   public ResponseEntity<Void> eliminarFavorito(@PathVariable Long id) throws ResourceNotFoundException {
+       favoritoService.eliminarFavorito(id);
+       return new ResponseEntity<>(HttpStatus.OK);
+   }
 }

@@ -36,28 +36,35 @@ public class SecurityConfiguration {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry ->{
-                    registry.requestMatchers("/auth/login","/home", "/usuarios/registrar/**","/login","/usuarios/listar","/logout","/productos/","productos/nombres","/favoritos/**").permitAll();//pagina del home inicial y el login, registro de usuarios
-                    registry.requestMatchers("/usuarios/admin/**","/productos/admin/**","admin/home/**","/productos/registrar","/productos/**","/categorias/admin/**","/caracteristicas/admin/**","/imagenes/admin/**").hasRole("ADMIN");//toda url que tenga admin sera permitido solo para roles admin
-                    registry.requestMatchers("/usuarios/home/**").hasRole("USER");
+                    registry.requestMatchers("/auth/login","/home", "/usuarios/registrar","/productos/","productos/nombres","/productos/listar","/productos/{id}","/favoritos/**").permitAll();//pagina del home inicial y el login, registro de usuarios
+                    registry.requestMatchers("/**","/favoritos/mis-favoritos","/favoritos/registrar/","/favoritos/{id}").hasRole("ADMIN");//toda url sera permitido solo para roles admin
+                    registry.requestMatchers("/categorias/listar",
+                            "/caracteristicas/listar",
+                            "/favoritos/mis-favortios",
+                            "/favoritos/registrar",
+                            "/favoritos/{id}",
+                            "/imagenes/listar",
+                            "/productos/{id}",
+                            "/productos/categorias",
+                            "/productos/disponibles",
+                            "/reservas/registrar",
+                            "/reservas/listar",
+                            "/reservar/mis-reservas",
+                            "/usuarios/home"
+                    ).hasRole("USER");
                     registry.anyRequest().authenticated();
                 })
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
-                //.formLogin(httpSecurityFormLoginConfigurer -> {
-                    //httpSecurityFormLoginConfigurer
-                            //.loginPage("/login")
-                            //.successHandler(new AuthenticationSuccessHandler())//esto es para redireccionar al usuario despues de login exitoso.
-                            //.permitAll();
-                //})
-                .logout(httpSecurityLogoutConfigurer -> {
-                    httpSecurityLogoutConfigurer
-                            .logoutUrl("/logout")
-                            .logoutSuccessHandler(logoutSuccessHandler())  // Manejar el éxito del logout
-                            .invalidateHttpSession(true)
-                            .deleteCookies("JSESSIONID")
-                            .permitAll();
-                })
+                // .logout(httpSecurityLogoutConfigurer -> {
+                //     httpSecurityLogoutConfigurer
+                //             .logoutUrl("/auth/logout")
+                //             .logoutSuccessHandler(logoutSuccessHandler())  // Manejar el éxito del logout
+                //             .invalidateHttpSession(true)
+                //             .deleteCookies("JSESSIONID")
+                //             .permitAll();
+                // })
                 .httpBasic(withDefaults())
                 .build();
     }

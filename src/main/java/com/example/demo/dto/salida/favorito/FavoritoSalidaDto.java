@@ -14,16 +14,16 @@ import lombok.Setter;
 public class FavoritoSalidaDto {
     private Long id;
     private String nombre;
-    private UsuarioSalidaDto usuarioSalidaDto;
-    private ProductoSalidaDto productoSalidaDto;
+    private UsuarioSalidaDto usuario;
+    private ProductoSalidaDto producto;
 
     @Override
     public String toString() {
         return "FavoritoSalidaDto{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
-                ", usuarioSalidaDto=" + usuarioSalidaDto +
-                ", productoSalidaDto=" + productoSalidaDto +
+                ", usuarioSalidaDto=" + usuario +
+                ", productoSalidaDto=" + producto +
                 '}';
     }
 }
